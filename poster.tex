@@ -1,0 +1,209 @@
+% Author: Nelson Lago
+% This file is distributed under the MIT Licence
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREÂMBULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% A língua padrão é a última da lista
+\documentclass[a1paper,brazilian,english]{article}
+
+% Vários pacotes e opções de configuração genéricos
+\usepackage{imegoodies}
+\usepackage[poster,hidelinks]{imelooks}
+% \tcbposterset{fontsize = 32pt} % default, mude se necessário
+
+% Diretórios onde estão as figuras; com isso, não é necessário (mas
+% é permitido) colocar o caminho completo em \includegraphics. Note
+% que a extensão nunca é necessária (mas é permitida), ou seja, o
+% resultado é o mesmo com "\includegraphics{figuras/foto.jpeg}",
+% "\includegraphics{foto.jpeg}", "\includegraphics{figuras/foto}"
+% ou "\includegraphics{foto}".
+\graphicspath{{figuras/},{fig/},{logos/},{img/},{images/},{imagens/}}
+
+% Comandos rápidos para mudar de língua:
+% \en -> muda para o inglês
+% \br -> muda para o português
+% \texten{blah} -> o texto "blah" é em inglês
+% \textbr{blah} -> o texto "blah" é em português
+\babeltags{br = brazilian, en = english}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O arquivo com os dados bibliográficos para biblatex; você pode usar
+% este comando mais de uma vez para acrescentar múltiplos arquivos
+\addbibresource{bibliografia.bib}
+
+% Este comando permite acrescentar itens à lista de referências sem incluir
+% uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
+%\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
+% Com este comando, todos os itens do arquivo .bib são incluídos na lista
+% de referências
+%\nocite{*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INÍCIO DO POSTER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Existem várias packages para criar pôsteres com LaTeX (a0poster, baposter,
+% tikzposter, sciposter...). As mais comuns atualmente são beamerposter
+% e tcolorbox (com sua biblioteca "poster"). Ambas funcionam muito bem;
+% beamerposter é mais familiar (ela simplesmente utiliza beamer com alguns
+% ajustes no tamanho das fontes e do papel), mas com tcolorbox o alinhamento
+% vertical dos elementos é MUITO mais simples, e esta é a solução adotada
+% aqui. Vale muito a pena ler a documentação com "texdoc tcolorbox" e
+% "texdoc tcolorbox-tutorial-poster".
+
+% Um pôster com tcolorbox é composto por blocos (posterboxes) coloridos
+% de tamanho variável; cada bloco pode conter textos ou imagens e um
+% título opcional. O pôster utiliza uma grade de dimensões definidas em
+% \begin{tcposter} com "rows=" e "columns=" para fazer o alinhamento:
+% para cada posterbox, podemos dizer "row=X, column=Y" para definir sua
+% posição. Além disso, podemos dizer "span=A, rowspan=B" para fixar
+% seu tamanho. Sem "span" e "rowspan", uma posterbox tem pelo menos o
+% tamanho de uma célula da grade, mas se seu tamanho natural for maior
+% ela extrapola esse tamanho. "span" e "rowspan" podem ser números
+% não-inteiros (como 0.8 ou 1.4).
+%
+% "\begin{posterbox}" recebe um conjunto de parâmetros opcional e um
+% conjunto de parâmetros obrigatório:
+%
+% "\begin{posterbox}[opcional]{obrigatório}".
+%
+% O conjunto de parâmetros opcional é onde inserimos os parâmetros comuns
+% de tcolorbox, como "adjusted title", "coltext", "titlerule" etc.; o
+% conjunto de parâmetros obrigatório é usado para determinar as dimensões
+% e a posição da posterbox, ou seja, as opções "name", "column", "below",
+% "span" etc.
+%
+% ALINHAMENTO HORIZONTAL
+%
+% É possível definir um poster com 2 colunas e fazer algo como
+%
+% \posterbox{column=1, span=1.3}{blah}
+% \posterbox{column*=2, span=0.7}{blah}
+%
+% A segunda posterbox será alinhada à direita ("column*="), então as
+% duas serão colocadas lado-a-lado sem sobreposições.
+%
+% Na prática, no entanto, é mais fácil fazer como no exemplo abaixo:
+% definimos que o poster tem 12 colunas, o que nos permite dividir
+% sua largura em 2, 3, 4 ou 6 colunas iguais ou diferentes (como
+% 1/2 + 1/2, 2/3 + 1/3, 1/4 + 1/4 + 1/2, 1/4 + 1/6 + 1/4 + 1/3 etc).
+%
+% ALINHAMENTO VERTICAL
+%
+% Embora seja possível alinhar as posterboxes em função da grade na
+% vertical, uma outra possibilidade é utilizar "above", "below" e
+% "between", como no exemplo abaixo: basta associar um nome "blah" a
+% uma determinada posterbox e, em outra, dizer "below=blah". Lembre-se
+% que a posterbox de nome "blah" deve ser definida *antes* que outra
+% possa fazer referência a ela. Também é possível fazer "below=top",
+% "above=bottom" etc. A opção "equal height group" também é muito útil.
+% Nada impede que você use estratégias de alinhamento diferentes para
+% cada posterbox.
+
+% Este modelo define a opção "smallmargins", que diminui a distância
+% entre o conteúdo de uma posterbox e suas bordas. Use com parcimônia!
+
+\begin{document}
+
+% Em um poster não há \maketitle
+
+\begin{tcbposter}[
+  poster = {
+    %showframe, % muito útil durante a preparação do poster
+    rows = 6,
+    columns = 12,
+    colspacing = 1.2cm,
+    rowspacing = .8cm,
+  },
+]
+
+
+\posterbox[titlebox]{name=titlebox, below=top, column=1, span=12}{
+    Automatização do fluxo de submissões de patches para o kernel Linux através do kworkflow\\
+}
+
+\posterbox[footerbox]{name=footerbox, above=bottom, column=1, span=12}{
+    \large
+    João Guilherme Barbosa de Souza\par
+    \vspace{4pt}
+    \small\ttfamily
+    joaosouzaaa12@usp.br\par
+    \vspace{4pt}
+    \footnotesize\rmfamily
+    \textcolor{imesoftblue!30!white}
+      {Instituto de Matemática, Estatística e Ciência da Computação}\relax
+}
+
+%%%%%%%% Contexto: Desenvolvimento kernel Linux %%%%%%%%
+
+
+\posterbox[adjusted title = Contribuição no kernel Linux, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
+          {name=contexto, below=titlebox, column=1, span=6}{
+
+    \noindent Desenvolvimento de maneira contínua e altamente colaborativa. O fluxo de submissão de contribuições, acompanhamento das respostas, versões e estados dos patches é feita exclusivamente via lista de e-mails públicas, dependendo de verificações manuais ou configurações de ferramentas externas  que acrescentam considerável overhead para colaboradores.\\
+}
+
+%%%%%%%% Kworkflow %%%%%%%%
+
+\posterbox[adjusted title = Kworkflow, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
+          {name=kworkflow, below=titlebox, column=7, span=6}{
+
+    \noindent Ferramenta de terminal para automação de tarefas comuns no desenvolvimento do kernel Linux. Funciona como um hub, integrando soluções locais e externas. Para melhoria da cobertura do sistema, adicionamos dois novos sistemas, \textbf{kw manage-contacts}, para gerenciamento de contatos e grupos de email e o \textbf{kw patch-track}, para rastreio, atualização de estado e visualizações de submissões e respostas dos patches submetidos\\
+}
+
+%%%%%%%% kw manage-contacts funcionalidades %%%%%%%%
+
+\posterbox[adjusted title = Funcionalidades do kw manage-contacts, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
+          {name=manage-contacts, below=contexto, column=1, span=6} {
+  \begin{itemize}
+    \item Criar, renomear, remover e adicionar contatos à grupos
+    \item Visualizar grupos e contatos associados ao grupo
+    \item Realizar submissões diretamente à grupos via ferramenta \textbf{kw send-patch}
+  \end{itemize}
+
+}
+
+%%%%%%%% kw patch-track funcionalidades %%%%%%%%
+
+\posterbox[adjusted title = Funcionalidades do kw patch-track, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
+          {name=patch-track, below=kworkflow, column=7, span=6} {
+    \begin{itemize}
+    \item Registro automático de submissões via \textbf{kw send-patch}
+    \item Atualização manual do estado dos patches ou via heurística com comando \textbf{kw patch-track update}
+    \item Visualizar lista de submissões ou lista de patches por submissão
+    \item Visualização dos e-mails submetidos e respostas via \textbf{mutt}
+  \end{itemize}
+
+}
+
+%%%%%%%% Resultados %%%%%%%%
+
+\posterbox[adjusted title = Resultados, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
+          {name=resultados, below=manage-contacts, column=1, span=6} {
+  \begin{itemize}
+    \item Acelera fluxo de submissão com uso de grupos de destinatários além de aumentar a corretude e permitir visualização de submissões
+    \item Melhora visibilidade do estado e evolução dos patches diretamente no fluxo do kw.
+    \item Reduz tempo gasto consultando históricos e interações na mailing list.
+    \item Reduz perda de contexto ao manter registro local das revisões.
+    \item Minimiza alternância entre ferramentas e consultas externas.
+  \end{itemize}
+}
+
+%%%%%%%% Próximos passos %%%%%%%%
+
+\posterbox[adjusted title = Próximos passos, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
+          {name=proximos-passos, below=patch-track, column=7, span=6} {
+
+}
+
+\end{tcbposter}
+
+\end{document}
