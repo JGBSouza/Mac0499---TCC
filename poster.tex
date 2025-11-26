@@ -190,7 +190,15 @@
 \posterbox[adjusted title = Kworkflow, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
           {name=kworkflow, below=titlebox, column=7, span=6}{
 
-    \noindent Ferramenta de terminal para automação de tarefas comuns no desenvolvimento do kernel Linux. Funciona como um hub, integrando soluções locais e externas. Para melhoria da cobertura do sistema, adicionamos dois novos sistemas, \textbf{kw manage-contacts}, para gerenciamento de contatos e grupos de email e o \textbf{kw patch-track}, para rastreio, atualização de estado e visualizações de submissões e respostas dos patches submetidos\\
+    \noindent Kworkflow (\textbf{kw}) é um hub de ferramentas para automação de tarefas comuns no desenvolvimento do kernel Linux, composto de soluções \textit{in-house} e integrações.
+
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{figuras/kw-architecture.pdf}
+        \captionof{figure}{Arquitetura do \textbf{kw}.}
+        \label{fig:kw-architecture}
+    \end{center}
+
+    \noindent A fim de preencher lacunas no processo de contribuição não cobertas pelo projeto, propomos duas novas features: \textbf{kw manage-contacts} e \textbf{kw patch-track}.
 }
 
 %%%%%%%% kw manage-contacts funcionalidades %%%%%%%%
