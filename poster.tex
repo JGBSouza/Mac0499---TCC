@@ -203,28 +203,49 @@
 
 %%%%%%%% kw manage-contacts funcionalidades %%%%%%%%
 
-\posterbox[adjusted title = Funcionalidades do kw manage-contacts, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
-          {name=manage-contacts, below=contexto, column=1, span=6} {
-  \begin{itemize}
-    \item Criar, renomear, remover e adicionar contatos à grupos
-    \item Visualizar grupos e contatos associados ao grupo
-    \item Realizar submissões diretamente à grupos via ferramenta \textbf{kw send-patch}
-  \end{itemize}
+\posterbox[adjusted title = Fechando o fluxo de submissão de \textit{patches} no \textbf{kw}, smallmargins, equal height group = midrow, colback=white, before upper=\justifying]
+          {name=fechando-fluxo-submissoes, below=contexto, column=1, span=12} {
+    \begin{minipage}{0.38\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figuras/placeholder.png}
+        \captionof{figure}{<figura com diagrama de onde as novas features atuam>}
+        \label{fig:submission-flow}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.58\textwidth}
 
+        \noindent Funcionalidades do \textbf{kw manage-contacts}:
+        \begin{itemize}
+            \item Criar, renomear, remover e adicionar contatos à grupos
+            \item Visualizar grupos e contatos associados ao grupo
+            \item Realizar submissões diretamente à grupos via ferramenta \textbf{kw send-patch}
+        \end{itemize}
+
+        \hfill
+
+        \noindent Funcionalidades do \textbf{kw patch-track}:
+        \begin{itemize}
+            \item Registro automático de submissões via \textbf{kw send-patch}
+            \item Atualização manual do estado dos patches ou via heurística com comando \textbf{kw patch-track update}
+            \item Visualizar lista de submissões ou lista de patches por submissão
+            \item Visualização dos e-mails submetidos e respostas via \textbf{mutt}
+        \end{itemize}
+
+    \end{minipage}
 }
 
 %%%%%%%% kw patch-track funcionalidades %%%%%%%%
 
-\posterbox[adjusted title = Funcionalidades do kw patch-track, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
-          {name=patch-track, below=kworkflow, column=7, span=6} {
-    \begin{itemize}
-    \item Registro automático de submissões via \textbf{kw send-patch}
-    \item Atualização manual do estado dos patches ou via heurística com comando \textbf{kw patch-track update}
-    \item Visualizar lista de submissões ou lista de patches por submissão
-    \item Visualização dos e-mails submetidos e respostas via \textbf{mutt}
-  \end{itemize}
-
-}
+% \posterbox[adjusted title = Funcionalidades do kw patch-track, smallmargins, equal height group = midrow, colback=white, before upper=\justifying]
+%           {name=patch-track, below=contexto, column=7, span=6} {
+%     \begin{itemize}
+%     \item Registro automático de submissões via \textbf{kw send-patch}
+%     \item Atualização manual do estado dos patches ou via heurística com comando \textbf{kw patch-track update}
+%     \item Visualizar lista de submissões ou lista de patches por submissão
+%     \item Visualização dos e-mails submetidos e respostas via \textbf{mutt}
+%   \end{itemize}
+%
+% }
 
 %%%%%%%% Resultados %%%%%%%%
 
