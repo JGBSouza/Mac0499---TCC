@@ -174,19 +174,13 @@
 \posterbox[adjusted title = Contribuições no kernel Linux, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
           {name=contexto, below=titlebox, column=1, span=6}{
 
-    \noindent O modelo de desenvolvimento do kernel Linux é colaborativo, descentralizado e contínuo.
+    \noindent O modelo de desenvolvimento do kernel Linux é colaborativo, descentralizado e contínuo. Submeter, acompanhar e enviar novas versões de \textit{patches} ocorrem via listas de e-mail. Por conta disto, nota-se que um tempo considerável é gasto com processos manuais e/ou configurações de ferramentas externas.\\
 
-    \vspace{1em}
-    
     \begin{center}
-        \includegraphics[width=0.6\textwidth]{figuras/patch-lifecycle.png}
-        \captionof{figure}{Caminho de uma contribuição no kernel Linux.}
+        \includegraphics[width=0.72\textwidth]{figuras/patch-lifecycle.png}
+        \captionof{figure}{Caminho de uma contribuição no kernel Linux}
         \label{fig:patch-lifecycle}
     \end{center}
-
-    \vspace{1em}
-
-    \noindent Submeter, acompanhar e enviar novas versões de \textit{patches} ocorrem via listas de e-mail. Por conta disto, nota-se que um tempo considerável é gasto com processos manuais e/ou configurações de ferramentas externas.\\
 }
 
 %%%%%%%% Kworkflow %%%%%%%%
@@ -194,17 +188,13 @@
 \posterbox[adjusted title = Kworkflow, smallmargins, equal height group = toprow, colback=white, before upper=\justifying]
           {name=kworkflow, below=titlebox, column=7, span=6}{
 
-    \noindent Kworkflow (\textbf{kw}) é um hub de ferramentas para automação de tarefas comuns no desenvolvimento do kernel Linux, composto de soluções \textit{in-house} e integrações.
-
-    \vspace{1em}
+    \noindent Kworkflow (\textbf{kw}) é um hub de ferramentas para automação de tarefas comuns no desenvolvimento do kernel Linux, composto de soluções \textit{in-house} e integrações. A fim de preencher lacunas no processo de contribuição não cobertas pelo projeto, propomos duas novas features:\\ \textbf{kw manage-contacts} e \textbf{kw patch-track}.
 
     \begin{center}
-        \includegraphics[width=0.6\textwidth]{figuras/kw-architecture.pdf}
-        \captionof{figure}{Arquitetura do \textbf{kw}.}
+        \includegraphics[width=0.7\textwidth]{figuras/kw-architecture.pdf}
+        \captionof{figure}{Arquitetura do kw}
         \label{fig:kw-architecture}
     \end{center}
-
-    \noindent A fim de preencher lacunas no processo de contribuição não cobertas pelo projeto, propomos duas novas features: \textbf{kw manage-contacts} e \textbf{kw patch-track}.
 }
 
 %%%%%%%% kw manage-contacts funcionalidades %%%%%%%%
@@ -214,7 +204,7 @@
     \begin{minipage}{0.46\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figuras/diagrama-tcc-atuacao-implementacoes.png}
-        \captionof{figure}{Atuação implementações no desenvolvimento do kernel}
+        \captionof{figure}{Fluxo completo com auxílio do kw}
         \label{fig:submission-flow}
     \end{minipage}
     \hfill
