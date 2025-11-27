@@ -176,11 +176,15 @@
 
     \noindent O modelo de desenvolvimento do kernel Linux é colaborativo, descentralizado e contínuo.
 
+    \vspace{1em}
+    
     \begin{center}
         \includegraphics[width=0.6\textwidth]{figuras/patch-lifecycle.png}
         \captionof{figure}{Caminho de uma contribuição no kernel Linux.}
         \label{fig:patch-lifecycle}
     \end{center}
+
+    \vspace{1em}
 
     \noindent Submeter, acompanhar e enviar novas versões de \textit{patches} ocorrem via listas de e-mail. Por conta disto, nota-se que um tempo considerável é gasto com processos manuais e/ou configurações de ferramentas externas.\\
 }
@@ -191,6 +195,8 @@
           {name=kworkflow, below=titlebox, column=7, span=6}{
 
     \noindent Kworkflow (\textbf{kw}) é um hub de ferramentas para automação de tarefas comuns no desenvolvimento do kernel Linux, composto de soluções \textit{in-house} e integrações.
+
+    \vspace{1em}
 
     \begin{center}
         \includegraphics[width=0.6\textwidth]{figuras/kw-architecture.pdf}
@@ -205,14 +211,14 @@
 
 \posterbox[adjusted title = Fechando o fluxo de submissão de \textit{patches} no \textbf{kw}, smallmargins, equal height group = midrow, colback=white, before upper=\justifying]
           {name=fechando-fluxo-submissoes, below=contexto, column=1, span=12} {
-    \begin{minipage}{0.38\textwidth}
+    \begin{minipage}{0.46\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figuras/diagrama-tcc-atuacao-implementacoes.png}
         \captionof{figure}{Atuação implementações no desenvolvimento do kernel}
         \label{fig:submission-flow}
     \end{minipage}
     \hfill
-    \begin{minipage}{0.58\textwidth}
+    \begin{minipage}{0.49\textwidth}
 
         \noindent Funcionalidades do \textbf{kw manage-contacts}:
         \begin{itemize}
@@ -230,7 +236,6 @@
             \item Visualizar lista de submissões ou lista de patches por submissão
             \item Visualização dos e-mails submetidos e respostas via \textbf{mutt}
         \end{itemize}
-
     \end{minipage}
 }
 
