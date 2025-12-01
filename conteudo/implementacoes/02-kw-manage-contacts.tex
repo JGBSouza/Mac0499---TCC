@@ -1,0 +1,122 @@
+\section{KW Manage Contacts}
+
+\subsection{Objetivos}
+
+No fluxo atual, patches podem ser submetidos através do kw com o uso da ferramenta \textit{kw send-patch}, que recebe como dados a lista de commits que deverão ser enviados e a lista
+de usuários, em geral, mantendores, que deve ser notificada da submissão do patch. A partir desse comando, um patch será gerado com as alterações especificadas e, através do \textit{git email}, 
+ferramenta de email's do \textit{github} os usuários receberão um email com as implementações do usuário. 
+
+Ao lidar com e-mails, é sempre comum que hajam grupos de pessoas que sempre serão endereçadas durante a submissão. 
+Atualmente, o kw fornece uma funcionalidade, o \textit{get\_maintainers} que lista
+mantenedores responsáveis pelos sistemas alterados, facilitando a identificação do ou dos responsáveis,
+o que, porém, não atende alguns grupos não oficiais, como, por exemplo, colegas de trabalho ou outros grupos
+externos envolvidos com o patch. Dessa forma, havia a necessidade de uma ferramenta que pudesse oferecer um sistema de gerenciamento de grupos
+de e-mail integrado ao fluxo do kw, garantindo maior praticidade e consistência na comunicação.
+
+Assim, o objetivo principal foi o de criar um sistema que permitisse gerenciar grupos de e-mail de forma centralizada, com armazenamento persistente em
+banco de dados e acesso através de interface em linha de comando (CLI). Permitindo, através disso, que o usuário pudesse cadastrar contatos, organizar esses contatos em
+grupos e, posteriormente, incluir automaticamente tais grupos ao enviar patches utilizando o kw mail.
+
+\subsection{Arquitetura}
+
+A arquitetura da solução foi planejada de forma modular. O banco de dados é responsável por armazenar contatos individuais (\textit{email\_contact}), os grupos (\textit{email\_group}) e suas associações (\textit{email\_contact\_group}),
+enquanto a interface de linha de comando fornece os comandos necessários para manipulação dessas informações. O modelo de dados contempla as entidades contato,
+grupo e a relação entre elas, garantindo flexibilidade para gerenciar múltiplos contextos e equipes.
+
+\subsection{Funcionalidades}
+A interação com a ferramenta ocorre exclusivamente pelo terminal, de forma a manter compatibilidade com o fluxo tradicional do kw. 
+Foram definidos comandos claros e diretos, permitindo que o usuário visualize grupos existentes, adicione novos contatos, associe-os a
+diferentes grupos e utilize esses grupos diretamente no envio de e-mails.
+
+As principais funcionalidades implementadas incluem:
+
+\begin{programruledcaption}{comandos kw manage contacts}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/comandos.bash}
+\end{programruledcaption}
+
+\subsubsection{Criação de Grupos}
+Essa função recebe o nome de um novo grupo e realiza a validação antes de sua criação. 
+A validação consiste em verificar se o nome já não existe no banco de dados, 
+se não contém caracteres especiais e se o tamanho é inferior a 50 caracteres. 
+Caso todas as condições sejam atendidas, o grupo é criado e persistido no banco com sucesso.
+
+\begin{programruledcaption}{create\_email\_group e create\_group}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/create_email_group_e_create_group.bash}
+\end{programruledcaption}
+
+\subsubsection{Exclusão de Grupos}
+Essa função remove um grupo de e-mails específico e todas as suas referências no banco de dados.
+Nesse caso, é verificada apenas a existência do grupo, uma vez que, se já foi previamente adicionado, 
+deve atender aos critérios de validação. A remoção utiliza a cláusula CASCADE na tabela de associação 
+\textit{email\_contact\_group}, garantindo que todas as relações existentes para aquele grupo sejam automaticamente 
+excluídas. Além disso, os contatos que permanecerem sem associação a grupos também são removidos.
+
+\begin{programruledcaption}{remove\_email\_group e remove\_group}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/remove_email_group_e_remove_group.bash}
+\end{programruledcaption}
+
+\subsubsection{Renomeação de Grupos}
+Essa função realiza a renomeação de um grupo de e-mails existente, 
+recebendo como parâmetros o nome atual e o novo nome desejado. Antes da atualização,
+o novo nome do grupo passa novamente pelo processo de validação, garantindo que não corresponda 
+a um grupo já existente no banco de dados e que siga as mesmas regras de restrição aplicadas na 
+criação — como não conter caracteres especiais e ter comprimento inferior a 50 caracteres. 
+Se as condições forem atendidas, o nome é atualizado com sucesso.
+
+\begin{programruledcaption}{rename\_email\_group e rename\_group}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/rename_email_group_e_rename_group.bash}
+\end{programruledcaption}
+
+\subsubsection{Adicionar contatos à Grupos de Email}
+Essa função é responsável por associar novos contatos a um grupo de e-mails existente. 
+Ela recebe como parâmetros o nome do grupo e uma lista de contatos no formato ``NOME\_CONTATO <EMAIL\_CONTATO>, NOME\_CONTATO <EMAIL\_CONTATO>,
+...''. Inicialmente, a função valida a existência do grupo no banco de dados. Em seguida, divide a lista de contatos e executa verificações
+individuais para cada um, como a validade do endereço de e-mail e a presença de um nome associado. Após essas validações, os contatos são 
+inseridos no banco de dados e vinculados ao grupo correspondente.
+
+\begin{programruledcaption}{add\_email\_contacts e add\_contact\_group}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/add_email_contacts_e_add_contact_group.bash}
+\end{programruledcaption}
+
+\subsubsection{Exibir grupos}
+A função show\_email\_groups é utilizada para exibir informações sobre os grupos de e-mail cadastrados. 
+Caso receba como parâmetro o nome de um grupo específico, a função valida sua existência e, 
+em seguida, mostra os contatos associados a esse grupo. Por outro lado, quando nenhum parâmetro 
+é informado, são exibidas informações gerais sobre todos os grupos existentes no banco de dados. 
+
+\begin{programruledcaption}{show email groups, print\_groups\_infos e print\_contacts\_infos}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/show_email_groups.bash}
+\end{programruledcaption}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1.2\textwidth]{exemplo\_group\_show}
+    \caption{Exemplo do comando ``group\_show''  sem um grupo especificado.\label{fig:exemplo_group_show:a}}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=1.2\textwidth]{exemplo_group_show_especifico}
+    \caption{Exemplo do comando ``group\_show'' para um grupo específico.\label{fig:exemplo_group_show_especifico:a}}
+\end{figure}
+
+\subsection{Enviar patches para grupos}
+
+Dois novos comandos, \textit{--to-groups} e \textit{--cc-groups} foram adicionados à ferramenta \textit{send-patch} para permitir o envio de patches diretamente para grupos. 
+Esses comandos recebem listas com os nomes dos grupos separados por vírgulas, busca os contatos associados no banco de dados e adiciona seus email's como destinatários.
+
+\begin{programruledcaption}{opções do comando --send do kw send-patch contendo o to-groups e o cc-groups}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_send_patch_options.bash}
+\end{programruledcaption}
+
+\begin{programruledcaption}{Função send\_patch\_main com métodos --to-groups e cc-groups}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_send_patch.bash}
+\end{programruledcaption}
+
+\subsection{Resultados}
+Entre os benefícios da abordagem adotada estão a maior praticidade no gerenciamento de destinatários, a redução de erros manuais na inclusão
+de e-mails e a possibilidade de reutilização de grupos em diferentes contextos. Isso se traduz em um processo mais ágil e confiável no envio de patches.
+
+Apesar dos avanços alcançados, algumas limitações ainda podem ser apontadas. 
+A ferramenta oferece suporte apenas via CLI, não possuindo interface gráfica que poderia ser desejável, principalmente para visualizar
+informações dos grupos e contatos de uma maneira mais organizada.

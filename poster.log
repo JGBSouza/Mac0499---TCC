@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian)  (format=lualatex 2025.9.16)  26 NOV 2025 18:24
+This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian)  (format=lualatex 2025.9.16)  27 NOV 2025 12:09
  restricted system commands enabled.
 **poster.tex
 (./poster.tex
@@ -3064,7 +3064,7 @@ Type  H <return>  for immediate help.
                                                   
 l.16179 \RequireBibliographyStyle{\blx@bbxfile}
                                              
-? X
+? x
 
 
 Here is how much of LuaTeX's memory you used:
@@ -3074,7 +3074,7 @@ Here is how much of LuaTeX's memory you used:
 8 attribute_list, 2 if_stack, 2 write, 1 pdf_colorstack nodes
    avail lists: 2:38,3:6,4:2,5:69,7:7,8:2,9:4
  84650 multiletter control sequences out of 65536+600000
- 117 fonts using 29614931 bytes
+ 117 fonts using 29614975 bytes
  124i,1n,129p,1378b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 warning  (pdf backend): no pages of output.

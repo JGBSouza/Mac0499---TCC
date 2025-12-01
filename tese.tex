@@ -49,6 +49,26 @@
 \usepackage{imegoodies}
 \usepackage[thesis]{imelooks}
 
+\usepackage{xcolor}
+\usepackage{minted}
+
+\usepackage{listings}
+
+% Definição de estilo para diffs
+\lstdefinelanguage{diff}{
+  morecomment=[f][\color{gray}]{@@},      % linhas @@
+  morecomment=[f][\color{red}]{-},        % linhas removidas
+  morecomment=[f][\color{green!60!black}]{+}, % linhas adicionadas
+  morecomment=[f][\color{blue}]{!},       % alterações
+}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  columns=flexible,
+  breaklines=true,
+  language=diff
+}
+
 %\nocolorlinks % para impressão em P&B
 
 % Diretórios onde estão as figuras; com isso, não é necessário (mas
@@ -91,20 +111,20 @@
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa, também são
 % armazenados nos metadados do PDF. O subtítulo é opcional.
-\title{Automatização do fluxo de submissões de patches para o Kernel Linux através do kworkflow}%[um subtítulo]
-\translatedtitle{Automating the Linux Kernel patch submission flow using kworkflow}%[a subtitle]
+\title{Automatização do fluxo de submissões de patches para o kernel Linux através do kworkflow}%[um subtítulo]
+\translatedtitle{Automating the Linux kernel patch submission flow using kworkflow}%[a subtitle]
 
 \author{João Guilherme Barbosa de Souza}
 
 \def\profa{Prof\kern.02em.\kern-.07emª\kern.07em}
 \def\dra{Dr\kern-.04em.\kern-.11emª\kern.07em}
 
-% Para TCCs, este comando define o supervisor
-\orientador{Prof. Dr. Paulo Roberto Miranda Meirelles}
-
 % Se não houver, remova; se houver mais de um, basta
 % repetir o comando quantas vezes forem necessárias
-\coorientador{David de Barros Tadokoro}
+\orientador{David de Barros Tadokoro}
+
+% Para TCCs, este comando define o supervisor
+\coorientador{Paulo Meirelles}
 
 %\banca{
 %  \profa{} \dra{} Fulana de Tal (orientadora) -- IME-USP [sem ponto final],
@@ -323,7 +343,9 @@
 \input{conteudo/00-exemplo-introducao}
 \pagestyle{mainmatter}
 \input{conteudo/01-kernel-linux}
-
+\input{conteudo/02-kw}
+\input{conteudo/03-trabalho-realizado}
+\input{conteudo/04-consideracoes-finais}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Um apêndice é algum conteúdo adicional de sua autoria que faz parte e

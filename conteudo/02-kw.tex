@@ -1,0 +1,84 @@
+\chapter{Kernel Workflow}
+
+Atualmente, considerada toda a complexidade envolvida em um sistema operacional, desenvolver para o kernel Linux pode ser uma tarefa extremamente desafiadora para a maioria dos desenvolvedores. Além do conhecimento teórico sobre a arquitetura do sistema, diversos conhecimentos práticos precisam ser empregados antes que qualquer contribuição possa, de fato, ser iniciada. A exemplo, por se tratar do núcleo de um sistema operacional, o domínio de ferramentas e técnicas para criação de ambientes seguros de teste, como o uso de máquinas virtuais e ambientes isolados, se fazem necessários para validar alterações sem comprometer o sistema principal do desenvolvedor. Além disso, é preciso saber construir e implantar esses ambientes — envolvendo etapas de build e deploy — de modo a reproduzir com precisão o comportamento do kernel em diferentes cenários e arquiteturas dos computadores.
+
+Tendo conhecimento desses fatos, diversas ferramentas são construídas pela comunidade para automatização desses fluxos, dentre essas ferramentas, o Kernel Workflow - KW, é uma ferramenta de software livre, desenvolvida principalmente em bash, que surge com o objetivo de apresentar uma solução unificada para as diversas dificuldades que um contribuidor pode vir a encontrar. Promovendo um ambiente mais simples e rápido de desenvolvimento, reduzindo a carga de conhecimento prévio necessária para futuros contribuidores além de consolidar um meio pelo qual seja possível medir de forma precisa o ciclo de contribuição do desenvolvedor do kernel, possibilitando que ainda mais soluções possam ser planejadas e que o impacto real das soluções já empregadas seja medido.
+
+\subsection{Arquitetura}
+Para que o software seja capaz de agrupar tantas ferramentas, o kw segue uma organização estrutural específica em 5 partes:
+
+\begin{enumerate}
+    \item Hub: Para permitir que todas as ferramentas do kw sejam oferecidas através de uma interface única, o software utiliza-se de um arquivo central, o \textit{kw.sh}. Esse arquivo serve como um hub, sendo o responsável por receber os comandos iniciais dos usuários, digitados no terminal, e redirecionar a execução para a ferramenta especificada. 
+    \item Componentes: Cada ferramenta do kw possui um arquivo principal, contendo o processamento central do comando do usuário, a lista de comandos específicos para aquela ferramenta e uma sessão de ajuda, que serve para guiar novos usuários em caso de dúvidas.
+    \item Bibliotecas: Durante o desenvolvimento, muitos dos códigos criados para permitir a execução dos comandos de uma ferramenta podem ser compartilhados em locais diversos e/ou entre ferramentas. Dessa forma, o kw utiliza-se de um esquema de bibliotecas, que são implementações de soluções de maneira genérica que podem ser reutilizados em todo o código. Em geral, essas implementações são agrupadas em arquivos por similaridade do contexto das soluções, por exemplo, bibliotecas para manipulação de textos, para operações no banco de dados ou manipulação de elementos como data e hora.
+    \item Plugins: Adicionalmente, existem seções de códigos na implementação das ferramentas que, por dependerem de contextos ou implementações externas, são pouco reutilizáveis e/ou muito voláteis, devido ao fato do desenvolvimento imprevisível desses ambientes. Assim, esses códigos são isolados em arquivos específicos, chamados plugins, de modo que o código principal fique isolado e não precise passar por alterações constantes, aproveitando apenas dos métodos declarados nesses plugins independendo da forma como estão implementados no momento.
+    \item Documentação: Para manter registro das implementações e todas as outras informações necessárias para atuais e novos colaboradores, o kw também mantém um sistema de documentação, utilizado também para a construção do blog da ferramenta.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{kw-architecture}
+\caption{Arquitetura conceitual do kw\\
+\small \textit{Fonte: \cite{tadokoro2025kworkflowSBES}}}
+\end{figure}
+
+\subsection{Soluções}
+Para compor o seu ferramental e permitir um ambiente holístico, o kw utiliza-se da integração e simplificação de automações consolidadas na comunidade, como o git, lore, b4, e outros, desenvolvendo soluções locais quando necessário. De acordo com \cite{tadokoro2023kwlore}, as automações desenvolvidas para o kw podem ser tanto práticas, que afetam diretamente a implementação para o kernel, como, por exemplo, o kw build e kw deploy, utilizados, respectivamente para crição e aplicação da imagem do kernel com as alterações do desenvolvedor, ou indiretas, afetando o fluxo de desenvolvimento como um todo, como no caso do kw send-patch ou do kw-patch hub, ferramentas utilizadas, respectivamente, para submissão de patches e consulta de patches do lore.
+
+Por se tratar de uma ferramenta de terminal, os comandos do kw precisam ser invocados de forma escrita pelo usuário, seguindo, a seguinte estrutura: \textit{kw <comando> <parâmetros>}. Até o momento, as principais implementações existentes na ferramenta, são:
+
+\begin{table}[ht]
+    \caption{comandos do kw. Fonte: Reproduzido de \cite[p.~4]{tadokoro2025kworkflowSBES}}
+    \label{tab:kw-commands}
+    \begin{center}
+    \begin{tabular}{|p{0.2\columnwidth}|p{0.30\columnwidth}|p{0.40\columnwidth}|}
+        \hline
+        \rowcolor{gray!20}
+        \textbf{Command} & \textbf{Category} & \textbf{Description} \\\hline
+        \texttt{build}    & kernel build/deploy    & Build kernel and modules \\\hline
+        \texttt{deploy}    & kernel build/deploy    & Deploy kernel and modules \\\hline
+        \texttt{kernel\-config\-manager}    & kernel build/deploy    & Manage \texttt{.config} files \\\hline
+        \texttt{env}    & kernel build/deploy    & Manage different environments for same kernel tree \\\hline
+        \texttt{bd}    & kernel build/deploy    & Build and Deploy kernel and modules \\\hline
+        \texttt{send-patch}    & patch submission    & Send patches via email \\\hline
+        \texttt{maintainers}    & patch submission    & \texttt{get\_maintai\-ners.pl} wrapper \\\hline
+        \texttt{codestyle}    & patch submission    & \texttt{checkpatch.pl} wrapper \\\hline
+        \texttt{remote}    & target machine    & Manage machines in the network \\\hline
+        \texttt{vm}    & target machine    & QEMU wrapper \\\hline
+        \texttt{ssh}    & target machine    & \texttt{ssh} wrapper \\\hline
+        \texttt{device}    & target machine    & Show hardware information \\\hline
+        \texttt{debug}    & code inspection    & Linux debug utilities \\\hline
+        \texttt{explore}    & code inspection    & Explore string patterns \\\hline
+        \texttt{diff}    & code inspection    & Diff files \\\hline
+        \texttt{init}    & kw management    & Initialize kw kernel tree \\\hline
+        \texttt{config}    & kw management    & Set kw configs \\\hline
+        \texttt{self-update}    & kw management    & Self-update mechanism \\\hline
+        \texttt{backup}    & kw management    & Save and restore kw data \\\hline
+        \texttt{clear-cache}    & kw management    & Clear kw cache \\\hline
+        \texttt{patch-hub}    & misc    & TUI for patches from lore.kernel.org \\\hline
+        \texttt{drm}    & misc    & DRM specific utilities \\\hline
+        \texttt{pomodoro}    & misc    & Pomodoro technique \\\hline
+        \texttt{report}    & misc    & Show usage statistics \\\hline
+    \end{tabular}
+    \end{center}
+\end{table}
+
+Apesar da grande estrutura, compreender de forma completa o fluxo do desenvolvedor do kernel ainda é um desafio que o kw busca superar, estando em constante processo de desenvolvimento por parte da comunidade. Um dos processos em abertos, é o de conseguir automatizar o fluxo de gestão dos patches após a submissão e antes da aprovação, na qual os patches passam pelo processo de revisão por parte dos mantenedores, que se torna um desafio em particular durante a contribuição para o kernel Linux dado o seu modelo de contribuição não trivial por listas de email.
+
+\subsection{O problema da contribuição no desenvolvimento de software livre}
+
+Um grande desafio encontrado durante a construção de sistemas de software é a dificuldade de conciliar o trabalho simultâneo dos diversos colaboradores, o que envolve a capacidade de coordenar as diferentes versões do projeto e as inúmeras submissões de alteração para a versão principal. Antes do advento dos sistemas de controle de versão, os programadores dependiam de métodos manuais para gerenciar suas modificações de código. Eles costumavam fazer backups regulares de seus arquivos de código ou adotar convenções de nomenclatura para distinguir entre as várias versões. Esse processo era bastante inconsistente e difícil de gerenciar, especialmente quando alguns desenvolvedores estavam trabalhando no mesmo projeto. \parencite{devineni2020vcs}
+
+Gerenciar as versões de um software se torna um problema ainda maior dependendo do tamanho total do software, do número de contribuidores e da quantidade de contribuições sendo realizadas nele de maneira simultânea. No kernel, por exemplo, a versão 6.13, lançada em 19/01/2025, contou com mais de 206 contribuições por dia por parte de 2085 colaboradores, resultando em um código fonte final com mais de 39 milhões de linhas \cite{kernelhistory}. Segundo a tendência, esses números devem seguir aumentando de forma constante conforme novas versões forem sendo desenvolvidas.
+
+Buscando superar parte dessas dificuldades e melhorar o processo colaborativo de desenvolvimento de software, foram desenvolvidos os sistemas de controle de versão. Ainda segundo \cite{devineni2020vcs} Os primeiros Version Control Systems (VCS), permitiam que os desenvolvedores mantivessem um histórico das alterações realizadas nos arquivos, o que facilitava a reversão de mudanças e oferecia visibilidade sobre a evolução do código. No entanto, o potencial colaborativo ainda era limitado, exigindo muitos acordos e gestões manuais por parte dos colaboradores.
+
+Como segunda opção, surgem os \textit{Concurrent Versions System} \textit{(CVS)}, baseados em um modelo de repositório central. Nele, os desenvolvedores podiam obter os arquivos, aplicar suas modificações e submetê-las novamente ao repositório. Esse modelo contribuiu para maior agilidade em equipes de desenvolvimento, ao permitir que várias pessoas trabalhassem simultaneamente na mesma base de código. Ainda assim, em projetos de grande porte ou com equipes distribuídas geograficamente, os sistemas centralizados apresentavam limitações no gerenciamento eficiente do trabalho.
+
+Por fim, surgem os modelos mais utilizados atualmente, os \textit{Distributed Concurrent Versions System} - \textit{DVCS}, como o Git. Esses sistemas, ao contrário da versão anterior, distribuía as cópias do código central entre os desenvolvedores, permitindo um método mais flexível de colaboração. Como cada colaborador poderia ter uma versão local do código, as mudanças realizadas por ele ao código principal poderiam ser administradas localmente antes de serem integradas, permitindo trabalhos offline e que alterações fossem submetidas em lotes ao invés de individualmente.
+
+Contudo, de acordo com \cite{kernelrecipes}, ainda que softwares como \textit{github}\footnote{https://github.com}, \textit{gerrit}\footnote{https://www.gerritcodereview.com} ou outros DVCS possam ser úteis para gerir o fluxo de submissões de softwares menores, eles ainda apresentam muitos problemas para escalar para softwares maiores. Dentre os principais motivos, são citados, por exemplo, a maneira como o fluxo para revisão desses softwares é mais demorado e diminui a produtividade dos mantenedores, a dificuldade de gerenciar e categorizar os inúmeros problemas e submissões com os recursos oferecidos, a maneira como as discussões e comentários dentro da comunidade são pouco acessíveis à outros contribuidores, dificultando a propagação de informação e gerando retrabalho, a dificuldade para que desenvolvedores possam se conectar à listas de discussões e serem notificados sempre que uma novidade relevante ocorra, entre outros. Parte desses problemas da comunidade, porém, ainda segundo \cite{kernelrecipes}, são solucionados ao se substituir os softwares de DVCS por servidores de email, como é feito para a contribuição do kernel.
+
+Essa substituição, entre tanto, também apresenta suas dificuldades, uma vez que, sendo um sistema com perspectiva muito mais abrangente, servidores de email não apresentam funcionalidades e melhorias para esse fluxo. Entre os diversos problemas enfrentados pelo usuário, destacam-se principalmente o grande \textit{overhead} inicial para novos contribuidores, a má rastreabilidade do históricos de submissões e revisões, a escalabilidade limitada, sobrecarregando a lista de email de alguns mantenedores, problemas de corrupção de arquivos, e a dificuldade de se capturar métricas. Além disso, é também nesse fluxo que ocorre a revisão dos \textit{patches}, ou seja, a comunicação direta entre desenvolvedores e mantenedores, sendo essencial que as respostas e notificações ocorram de forma rápida, dado que submissões realizadas durante o período de estabilização ou durante a janela de mesclagem precisam ser avaliadas dentro desses períodos fixos de tempo. 
+
+Dada a natureza dessa submissão, em muitos casos, isso implica ainda que os desenvolvedores dependam de ferramentas externas, que ainda precisariam ser configuradas, ou do próprio navegador para checar a lista de e-mails em softwares acessíveis através da web, como o gmail, para responder mensagens e acompanhar o status dos \textit{patches}, sendo um desafio ainda maior quando o endereço de e-mail utilizado para submissões é reutilizado para outros contextos, pois isso aumenta a complexidade de filtrar, organizar e priorizar as mensagens relevantes, gerando ruído na comunicação e dificultando a identificação rápida de respostas e revisões. Por fim, da perspectiva do KW, a dependência de sistemas de email também representa uma fragmentação no fluxo do software e em seu princípio de englobar de forma holística o processo de desenvolvimento. Isso porque o usuário submete alterações pelo KWorkflow, mas precisa recorrer a outros meios para acompanhar revisões e depois retornar para atualizar suas submissões, além de impedir a análise completa do fluxo de contribuição, que é um dos objetivos futuros do projeto.

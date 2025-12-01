@@ -1,0 +1,1 @@
+is_on_database="$(select_from "kernel_config WHERE name IS '${config_name}'" '' '' '' "$flag")"
