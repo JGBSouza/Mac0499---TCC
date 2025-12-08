@@ -1,5 +1,0 @@
-- mudar o prefixo "Figure" p/ "Figura"
-- na caixa do meio, fazer e adicionar um diagrama que aponta visualmente onde o `manage-contacts` e o `patch-track` atuam
-- reduzir o texto do resultados
-- colocar (sem medo) os próximos passos
-- checar ortografia do que eu escrevi (pra português, acho que esta ferramenta é boa: languagetool.org)

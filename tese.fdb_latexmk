@@ -1,9 +1,0 @@
-# Fdb version 4
-["lualatex"] 0 "tese.tex" "tese.pdf" "tese" 0 -1
-  "tese.aux" 0 -1 0 "lualatex"
-  "tese.tex" 0 -1 0 ""
-  (generated)
-  "tese.aux"
-  "tese.log"
-  "tese.pdf"
-  (rewritten before read)
