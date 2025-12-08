@@ -1,0 +1,55 @@
+# Ignorados
+
+## Arquivos auxiliares principais do LaTeX
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+*.idx
+*.ilg
+*.ind
+*.lop
+*.ist
+
+## Arquivos auxiliares do bibtex/biblatex/biber
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## Arquivos de saída
+*.dvi
+*.xdv
+*-converted-to.*
+*.ps
+*.eps
+*.pdf
+
+## Outros
+*.synctex.gz
+*.fdb_latexmk
+*.cut
+_minted/
+
+## Para quem redireciona os arquivos auxiliares e compilados
+aux/
+build/
+
+# Exceções
+
+## Diretório p/ figuras
+!figuras/*
+
+## PDFs que devem ser monitorados pelo Git (opcional)
+!tese.pdf
+!poster.pdf
