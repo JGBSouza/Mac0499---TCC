@@ -9,3 +9,4 @@
     ```latex
     ``Eu sou um trecho entre aspas duplas''
     ```
+- Agora no final da revisão, percebi que tem lugares que você usa o _ ao invés do - nas features do kw, como send_patch ao invés de send-patch. Como só me toquei agora, posso ter deixado passar alguns e não ter corrigido...
