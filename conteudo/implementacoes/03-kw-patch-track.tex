@@ -23,10 +23,6 @@ Essa estrutura de dados estabelece uma base robusta para o controle do ciclo de 
 
 \todo[inline]{Veja se resgata aquele pseudo-UML que você me mostrou pra mim naquela reunião em setembro quando eu estava no CBSoft. Isto valoriza e mostra o trabalho que você fez! Não se esqueça de referenciar a figura no texto acima.}
 
-\subsection{Integração com o mutt}
-
-\todo[inline]{Chuto que você deixou esta subseção aqui, pois planejava implementar isto. Talvez, pra não jogar fora o que você planejou pra isto, mostre o plano/modelo que você fez e os possíveis benefícios; porém, deixando claro que não foi implementado de fato.}
-
 \subsection{Funcionalidades}
 
 O \textit{kw patch\_track} oferece um conjunto de funcionalidades voltadas à automatização e ao gerenciamento das submissões de patches. Todas as interações ocorrem de forma integrada ao fluxo do \textit{kw}, mantendo a compatibilidade com a ferramenta principal de envio.
@@ -36,29 +32,39 @@ Durante a submissão dos patches com a ferramenta \textit{kw send\_patch}, uma c
 
 Para extrair e salvar as informações dos patches submetidos, a ferramenta se utiliza da técnica de raspagem de dados de dois tipos de arquivos gerados durante a etapa de envio. O primeiro desses arquivos, gerado temporariamente para esse fluxo, é resultado do redirecionamento da saída do comando \textit{git send-email}, utilizado pelo \textit{send-patch} para publicação dos patches. Desse arquivo então o \textit{kw patch-track} extrai grande parte das informações, como o título, email do autor do commit/patch, email do remetente (pode não ser o mesmo usado para criar os commits), os emails dos destinatários, data e horário de submissão e por fim o message-id. Adicionalmente, para ter acesso aos hashes dos commits, avalia-se também os arquivos de patches preliminares, gerados pelo \textit{kw send-patch} para pré-processamento interno. Ainda que parte dos dados extraidos do resultado da submissão estejam disponíveis também no arquivo do patch, o fato de que parte das informações como títulos, autor e destinatários podem ser reescrita durante a submissão somado ao fato de que esses arquivos contém textos adicionais com o conteúdo do patch, poderiam levar a erros de julgamento ou informações imprecisas na hora da extração. 
 
-\todo[inline]{As subsubseções abaixo podem virar uma única subsubseção de próximos passos. Entendo que o fluxo principal (o tal do protótipo vertical) é o que você descreve acima.}
+\subsection{Integração com o mutt}
+\subsection{Próximos passos}
+Atualmente, o patch-track encontra-se estruturado, com um objetivo claro e possíveis impactos para futuros usuários. Alguns pontos de desenvolvimento que permitiriam que a ferramenta evoluisse para uma versão inicial, incluem:
 
 \subsubsection{Atualização Automática de Status}
-%O sistema implementa uma lógica de atualização automática dos status dos patches, baseada em heurísticas inspiradas no fluxo de revisão do \textit{kernel Linux}.
-%Os estados possíveis incluem:
-%\begin{itemize}
-%\item \textbf{Submetido/Em revisão:} atribuído a patches recém-enviados;
-%\item \textbf{Revisado:} mantido enquanto há respostas na thread sem substituições;
-%\item \textbf{Outdated:} aplicado quando uma nova versão substitui a anterior;
-%\item \textbf{Aprovado:} definido ao detectar respostas contendo marcadores como \textit{Reviewed-by};
-%\item \textbf{Mergeado:} atribuído quando o hash do commit correspondente é identificado no repositório de destino.
-%\end{itemize}
-%O usuário também pode alterar manualmente o status de suas contribuições, mantendo controle total sobre o histórico.
+Implementar no sistema uma lógica de atualização automática dos status dos patches, baseada em heurísticas inspiradas no fluxo de revisão do \textit{kernel Linux}. Atualizando os estados dos patches e consequentemente das contribuições através de um comando
+Os estados possíveis incluem:
+\begin{itemize}
+\item \textbf{Submetido/Em revisão:} atribuído a patches recém-enviados;
+\item \textbf{Revisado:} mantido enquanto há respostas na thread sem substituições;
+\item \textbf{Outdated:} aplicado quando uma nova versão substitui a anterior;
+\item \textbf{Aprovado:} definido ao detectar respostas contendo marcadores como \textit{Reviewed-by};
+\item \textbf{Mergeado:} atribuído quando o hash do commit correspondente é identificado no repositório de destino.
+\end{itemize}
+
 \subsubsection{Atualização Manual de Status}
-\subsubsection{Visualização de contribuição}
+Para permitir mais liberdade ao usuário e eventuais correções de julgamentos da heurística de atualização automática, uma outra implementação útil seria permitir alterações manuais do status do patch, mantendo controle total sobre o histórico.
+\subsubsection{Visualização de contribuição/Patches}
+Para permitir melhor gestão dos usuários de suas contribuições, permitir uma visualização detalhada tanto das contribuições quanto dos patches submetidos em cada uma
 \subsubsection{Renomeação de contribuição}
+Permitir que o usuário renomeie suas contribuições caso necessário, uma vez que o nome da contribuição só possui valor para o armazenamento e organização pessoal do usuário
 \subsubsection{Realocação de submissões}
+Permitir que o usuário realoque as suas submissões de uma contribuição para outra, como a gestão de qual à qual contribuição pertence uma submissão possui sentido apenas para usuário, permitir que ele realoque submissões pode ajudar na correção de eventuais erros de identificação da contribuição durante o envio dos patches
 \subsubsection{Definição de repositórios}
+Permitir que os usuários determinem à qual repositório será integrada sua contribuição
 \subsubsection{Definição de mantenedores}
+Permitir que os usuários determinem mantenedores para seus repositórios
 \subsubsection{Arquivamento de contribuições}
+Permitir que os usuários marquem contribuições como arquivadas, evitando que elas sejam automaticamente incluídas em comandos que interagem com a lista de contribuições
 
 \subsection{Resultados}
 
 \todo[inline]{Aqui, você pode usar o parágrafo abaixo que você comentou como base, focando mais no potencial do que no que foi feito. Novamente, deixando claro que é um WIP, mas que você já avançou bastante e deixou o terreno feito pra outras pessoas finalizarem; aliás, é literalmente o que acontecerá, se você parar para pensar :)}
 
-%Com a introdução do \textit{kw patch track}, o processo de contribuição via \textit{kw} tornou-se mais organizado e automatizado. A ferramenta permite acompanhar o ciclo de vida de cada patch de forma centralizada, eliminando a necessidade de acompanhamento manual e reduzindo o risco de perda de informações, apresentando maior clareza e rastreabilidade no fluxo de revisões, economia de tempo no acompanhamento de submissões, histórico completo e versionado de cada contribuição e uma base estruturada para análise estatística e integração futura com outras ferramentas, além de um ambiente mais unificado para colaboração no kernel, reduzindo dependências de outras ferramentas como softwares gerenciadores de email. Contudo, apesar dos avanços, dada a necessidade de uma visualização estruturada dos dados, uma das limitações o uso de uma interface gráfica através do terminal pode \textit{kw}.
+
+Com a introdução do \textit{kw patch track}, o processo de contribuição via \textit{kw} deve tornar-se mais organizada e automatizada. A ferramenta deve permitir acompanhar o ciclo de vida de cada patch de forma centralizada, eliminando a necessidade de acompanhamento manual e reduzindo o risco de perda de informações, apresentando maior clareza e rastreabilidade no fluxo de revisões, economia de tempo no acompanhamento de submissões, histórico completo e versionado de cada contribuição e uma base estruturada para análise estatística e integração futura com outras ferramentas, além de um ambiente mais unificado para colaboração no kernel, reduzindo dependências de outras ferramentas como softwares gerenciadores de email. Contudo, apesar dos avanços, dada a necessidade de uma visualização estruturada dos dados, uma das limitações o uso de uma interface de texto via terminal pode melhorar a usabilidade da ferramenta, garantindo melhor adesão da comunidade e melhor impacto na gestão de contribuições e agilidade nessa etapa de desenvolvimento.
