@@ -32,7 +32,6 @@ Durante a submissão dos patches com a ferramenta \textit{kw send\_patch}, uma c
 
 Para extrair e salvar as informações dos patches submetidos, a ferramenta se utiliza da técnica de raspagem de dados de dois tipos de arquivos gerados durante a etapa de envio. O primeiro desses arquivos, gerado temporariamente para esse fluxo, é resultado do redirecionamento da saída do comando \textit{git send-email}, utilizado pelo \textit{send-patch} para publicação dos patches. Desse arquivo então o \textit{kw patch-track} extrai grande parte das informações, como o título, email do autor do commit/patch, email do remetente (pode não ser o mesmo usado para criar os commits), os emails dos destinatários, data e horário de submissão e por fim o message-id. Adicionalmente, para ter acesso aos hashes dos commits, avalia-se também os arquivos de patches preliminares, gerados pelo \textit{kw send-patch} para pré-processamento interno. Ainda que parte dos dados extraidos do resultado da submissão estejam disponíveis também no arquivo do patch, o fato de que parte das informações como títulos, autor e destinatários podem ser reescrita durante a submissão somado ao fato de que esses arquivos contém textos adicionais com o conteúdo do patch, poderiam levar a erros de julgamento ou informações imprecisas na hora da extração. 
 
-\subsection{Integração com o mutt}
 \subsection{Próximos passos}
 Atualmente, o patch-track encontra-se estruturado, com um objetivo claro e possíveis impactos para futuros usuários. Alguns pontos de desenvolvimento que permitiriam que a ferramenta evoluisse para uma versão inicial, incluem:
 
@@ -61,7 +60,8 @@ Permitir que os usuários determinem à qual repositório será integrada sua co
 Permitir que os usuários determinem mantenedores para seus repositórios
 \subsubsection{Arquivamento de contribuições}
 Permitir que os usuários marquem contribuições como arquivadas, evitando que elas sejam automaticamente incluídas em comandos que interagem com a lista de contribuições
-
+\subsubsection{Integração com o mutt}
+Permitir integração com o cliente de email via terminal \textit{Mutt}, permitindo analisar caixas de email do usuário, monitorando submissões e eventuais respostas, além de permitir a visualização dos emails diretamente via terminal. 
 \subsection{Resultados}
 
 \todo[inline]{Aqui, você pode usar o parágrafo abaixo que você comentou como base, focando mais no potencial do que no que foi feito. Novamente, deixando claro que é um WIP, mas que você já avançou bastante e deixou o terreno feito pra outras pessoas finalizarem; aliás, é literalmente o que acontecerá, se você parar para pensar :)}
