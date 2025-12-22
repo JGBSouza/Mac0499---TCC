@@ -1,22 +1,12 @@
 \section{KW Manage Contacts}
 
-\todo[inline]{Adicionar ``intro da seção''}
+No fluxo atual, a submissão de \textit{patches} pode ser realizada por meio da ferramenta \textit{kw send-patch}. Este comando recebe como parâmetros a lista de \textit{commits} a serem enviados, os usuários responsáveis — geralmente mantenedores — e as listas de discussão do subsistema pertinente que devem ser notificadas da contribuição. A partir desses dados, o \textit{kw} gera as modificações necessárias e utiliza internamente o \textit{git send-email} para a transmissão das mensagens aos destinatários. Essa abordagem reflete a função do \textit{kw} como um \textit{hub}, que agrega e simplifica o uso de ferramentas já consolidadas na comunidade, automatizando etapas manuais e aprimorando o fluxo de submissão do desenvolvedor.
+
+Ao lidar com e-mails, é comum que existam grupos de destinatários recorrentes durante a submissão de \textit{patches}. Atualmente, o \textit{kw} disponibiliza a funcionalidade \textit{kw maintainers} que, ao utilizar internamente o \textit{script get\_maintainers.pl} do kernel, lista os mantenedores responsáveis pelos subsistemas alterados. Embora essa ferramenta facilite a identificação dos responsáveis oficiais, ela não contempla grupos não oficiais ou externos, como equipes de trabalho e colaboradores de projetos específicos. Diante disso, surgiu a necessidade de uma ferramenta integrada ao fluxo do \textit{kw} para o gerenciamento de grupos de e-mail, visando garantir maior praticidade e consistência na comunicação do desenvolvedor.
 
 \subsection{Objetivos}
 
-No fluxo atual, patches podem ser submetidos através do kw com o uso da ferramenta \textit{kw send-patch}, que recebe como dados a lista de commits que deverão ser enviados e a lista
-de usuários, em geral, mantenedores\todo{faltou as listas do subsistema/contexto em questão}, que devem ser notificados da submissão do patch. A partir desse comando, um patch será gerado com as alterações especificadas e, através do \textit{git email},
-ferramenta de emails do \textit{github} os usuários receberão um email com as implementações do usuário.\todo[inline]{Na verdade, o kw usa o git send-email por baixo dos panos e ele não tem relação com o GitHub. Aqui vale pincelar como a noção de hub do kw, em que ele agrega a ferramenta que já é consolidada (de certa forma), facilitando e aprimorando o seu uso.}
-
-Ao lidar com e-mails, é sempre comum que hajam grupos de pessoas que sempre serão endereçadas durante a submissão. 
-Atualmente, o kw fornece uma funcionalidade, o \textit{get\_maintainers}\todo{get\_maintainers é o script por baixo dos panos; no kw é só kw maintainers} que lista
-mantenedores responsáveis pelos sistemas alterados, facilitando a identificação do ou dos responsáveis,
-o que, porém, não atende alguns grupos não oficiais, como, por exemplo, colegas de trabalho ou outros grupos
-externos envolvidos com o patch. Dessa forma, havia a necessidade de uma ferramenta que pudesse oferecer um sistema de gerenciamento de grupos
-de e-mail integrado ao fluxo do kw, garantindo maior praticidade e consistência na comunicação.
-
-Assim, o objetivo principal foi o de criar um sistema que permitisse gerenciar grupos de e-mail de forma centralizada, com armazenamento persistente em
-banco de dados\todo{talvez ``[...] armazenamento persistente no banco de dados do kw [...]''} e acesso através de interface em linha de comando (CLI). Permitindo, através disso, que o usuário pudesse cadastrar contatos, organizar esses contatos em
+Assim, o objetivo principal foi o de criar um sistema que permitisse gerenciar grupos de e-mail de forma centralizada, com armazenamento persistente no banco de dados do kw e acesso através de interface em linha de comando (CLI). Permitindo, através disso, que o usuário pudesse cadastrar contatos, organizar esses contatos em
 grupos e, posteriormente, incluir automaticamente tais grupos ao enviar patches utilizando o kw send-patch.
 
 \subsection{Arquitetura}
@@ -30,9 +20,9 @@ A interação com a ferramenta ocorre exclusivamente pelo terminal, de forma a m
 Foram definidos comandos claros e diretos, permitindo que o usuário visualize grupos existentes, adicione novos contatos, associe-os a
 diferentes grupos e utilize esses grupos diretamente no envio de e-mails.
 
-As principais funcionalidades implementadas incluem:\todo{Ao invés de usar os dois pontos, usar o \textbackslash ref\{\} funciona melhor (``[...] principais funcionalidades implementadas estão ilustradas no Programa X.YZ.''}
+As principais funcionalidades implementadas são referenciadas no Programa~\ref{prog:kw_manage_contacts_comandos}
 
-\begin{programruledcaption}{comandos kw manage contacts}
+\begin{programruledcaption}{comandos kw manage contacts. \label{prog:kw_manage_contacts_comandos}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/comandos.bash}
 \end{programruledcaption}
 
@@ -81,12 +71,13 @@ inseridos no banco de dados e vinculados ao grupo correspondente.\todo{ref ao pr
 \end{programruledcaption}
 
 \subsubsection{Exibir grupos}
-A função show\_email\_groups\todo{ref ao programa e colocar em itálico como você estava convencionando} é utilizada para exibir informações sobre os grupos de e-mail cadastrados. 
+A função \textit{show\_email\_groups}, Programa~\ref{prog:show_email_groups}, é utilizada para exibir informações sobre os grupos de e-mail cadastrados. 
 Caso receba como parâmetro o nome de um grupo específico, a função valida sua existência e, 
 em seguida, mostra os contatos associados a esse grupo. Por outro lado, quando nenhum parâmetro 
 é informado, são exibidas informações gerais sobre todos os grupos existentes no banco de dados. 
 
 \begin{programruledcaption}{show email groups, print\_groups\_infos e print\_contacts\_infos}
+    \label{prog:show_email_groups}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/show_email_groups.bash}
 \end{programruledcaption}
 
