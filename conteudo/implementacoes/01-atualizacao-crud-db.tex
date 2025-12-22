@@ -1,73 +1,58 @@
 \section{CRUD banco de dados}
 
-Para poder dar suporte para suas diversas features, o kw conta com um sistema de banco de dados, desenvolvido em SQLite3, que armazena informações necessárias para o funcionamento,
-principalmente, das as ferramentas kw pomodoro e kw patch-hub, além de possuir dados de telemetria sobre a utilização do software pelos usuários.\todo{Excelente!} Para garantir a consistência e segurança dos dados entre o banco de dados e a aplicação,
-é crucial desenvolver operações que lidem com operações\todo{pense em como evitar estes ``operações'' seguidos; será que ``desenvolver formas de lidar com operações de [...]''} de manipulação, como inserção, leitura, atualização e deleção de dados (conhecidas como CRUD - create, read, update,
-delete). Essas operações servem como interface entre as diferentes partes do sistema, permitindo uma interação eficaz e garantindo que os dados sejam gerenciados de forma precisa
-e confiável.
+Para poder dar suporte para suas diversas features, o kw conta com um sistema de banco de dados, desenvolvido em SQLite3, que armazena informações necessárias para o funcionamento, principalmente, das as ferramentas kw pomodoro e kw patch-hub, além de possuir dados de telemetria sobre a utilização do software pelos usuários. Para garantir a consistência e segurança dos dados entre o banco de dados e a aplicação, é crucial desenvolver operações que lidem com operações de manipulação, como inserção, leitura, atualização e deleção de dados (conhecidas como CRUD - create, read, update, delete). Essas operações servem como interface entre as diferentes partes do sistema, permitindo uma interação eficaz e garantindo que os dados sejam gerenciados de forma precisa e confiável.
 
-Contudo, deixar instruções SQL dispersas diretamente no código de aplicação não é considerado uma boa prática de engenharia de software, pois dificulta a manutenção, a legibilidade
-e a evolução do sistema. O ideal é encapsular o acesso ao banco de dados em funções ou camadas de abstração que forneçam operações de mais alto nível.
-reduzindo o acoplamento entre a lógica de negócio e as consultas.
+Contudo, deixar instruções SQL dispersas diretamente no código de aplicação não é considerado uma boa prática de engenharia de software, pois dificulta a manutenção, a legibilidade e a evolução do sistema. O ideal é encapsular o acesso ao banco de dados em funções ou camadas de abstração que forneçam operações de mais alto nível, reduzindo o acoplamento entre a lógica de negócio e as consultas.
 
-No caso do Kworkflow, desenvolvido em Bash, tal abordagem é limitada pela própria linguagem, que não dispõe de mecanismos nativos para abstração de consultas SQL. Assim, a interação com o
-banco de dados precisa ser realizada diretamente por meio de comandos de script, o que torna essa separação menos natural, embora ainda desejável para organizar e isolar responsabilidades.
- 
-Para tal, o software contava com algumas funções implementadas que permitiam a interação com o banco de dados, mas que não isolavam suficientemente o código e as queries, tornando necessário
-o uso de comandos SQL em alguns casos,\todo{esta frase está um pouco longa; veja se quebrar aqui fica bom} como nos comandos de seleção, que recebiam trechos na linguagem SQL com a cláusula \textit{where}, que serve para especificar quais critérios devem atender
-os parâmetros que serão selecionados ou removidos. Além disso, especificamente nos comandos de seleção, também foi implementado
-um parâmetro adicional para permitir o uso do da clausula \textit{ordered\_by}, que possibilita especificar uma ordenação para os dados retornados com base em um atributo comparável entre eles. Por fim,
-essa alteração também permitiu que comparações de desigualdades fossem feitas de forma mais abrangente e ordenada, visto que na função de remoção apenas operações de comparação eram possíveis e que
-na função de seleção apenas com o código SQL explícito:\todo{aqui ficou meio confuso o que você está querendo dizer}
+No caso do Kworkflow, desenvolvido em Bash, tal abordagem é limitada pela própria linguagem, que não dispõe de mecanismos nativos para abstração de consultas SQL. Assim, a interação com o banco de dados precisa ser realizada diretamente por meio de comandos de script, o que torna essa separação menos natural, embora ainda desejável para organizar e isolar responsabilidades.
 
-\todo[inline]{Não esqueça de amarrar o texto acima com os códigos abaixo usando referências. Veja se dá pra ir mostrando os códigos ao passo que vai falando deles, por exemplo, após a frase que fala como que era a implementação antiga, colocar o código das partes antigas, etc.}
+Para tal, o software contava com algumas funções implementadas que permitiam a interação com o banco de dados, mas que não isolavam suficientemente o código e as queries, tornando necessário o uso de comandos SQL em alguns casos. Esse cenário era visível nos comandos de seleção originais (Programa~\ref{prog:select_from_antigo}), que recebiam trechos na linguagem SQL com a cláusula \textit{where}, utilizada para especificar quais critérios devem atender os parâmetros selecionados ou removidos, como exemplificado no Programa~\ref{prog:snippet_uso_antigo_select}.
 
-\todo[inline]{Nos códigos, pode omitir documentação e até as partes que não são ``interessantes'' para o que você está querendo apontar. Podemos colocar os códigos na íntegra nos anexos (acho uma boa ideia).}
-
-\begin{programruledcaption}{código remove\_from antigo}
-    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_antigo.bash}
-\end{programruledcaption}
-
-\begin{programruledcaption}{código remove\_from novo}
-    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_novo.bash}
-\end{programruledcaption}
-
-\begin{programruledcaption}{código select\_from antigo}
+\begin{programruledcaption}{código select\_from antigo. \label{prog:select_from_antigo}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/select_from_antigo.bash}
 \end{programruledcaption}
 
-\begin{programruledcaption}{código select\_from novo}
-    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/select_from_novo.bash}
-\end{programruledcaption}
-
-\begin{programruledcaption}{código generate\_where\_clause utilizado nas novas funções para gerar a cláusula WHERE SQL a partir dos parâmetros passados}
-    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/generate_where_clause.bash}
-\end{programruledcaption}
-
-\begin{programruledcaption}{snippet uso função select\_from\_antiga}
+\begin{programruledcaption}{snippet uso função select\_from\_antiga. \label{prog:snippet_uso_antigo_select}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/snippet_uso_antigo_select_from.bash}
 \end{programruledcaption}
 
-\begin{programruledcaption}{snippet uso função select\_from\_nova}
+Além disso, especificamente nos comandos de seleção (Programa~\ref{prog:select_from_novo}), também foi implementado um parâmetro adicional para permitir o uso da clausula \textit{ordered\_by}, que possibilita especificar uma ordenação para os dados retornados com base em um atributo comparável entre eles. O resultado dessa transição para o uso de parâmetros pode ser observado no Programa~\ref{prog:snippet_uso_novo_select}.
+
+\begin{programruledcaption}{código select\_from novo. \label{prog:select_from_novo}}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/select_from_novo.bash}
+    
+\end{programruledcaption}
+
+\begin{programruledcaption}{snippet uso função select\_from\_nova. \label{prog:snippet_uso_novo_select}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/snippet_uso_novo_select_from.bash}
 \end{programruledcaption}
 
+Por fim, essa alteração também permitiu que comparações de desigualdades fossem feitas de forma mais abrangente e ordenada, visto que na função de remoção antiga (Programa~\ref{prog:remove_from_antigo}) apenas operações de comparação eram possíveis e que na função de seleção apenas com o código SQL explícito. Para modernizar esse fluxo, implementou-se a nova função de remoção (Programa~\ref{prog:remove_from_novo}) baseada na lógica de geração automática de cláusulas do Programa~\ref{prog:generate_where_clause}.
 
-Além disso, outra implementação desenvolvida nessa etapa, foi a implementação do novo método \textit{update\_into}\todo{aqui entraria a referência ``(Programa ...)''}, que permitia a alteração pontual de algum atributo
-dentro de uma entidade do banco de dados e da função \textit{generate\_set\_clause}, utilizada para gerar a clausula \textit{set} do SQL, que define quais conjuntos de atributos serão alterados
-e quais os novos valores para esses atributos. Essa implementação também faz uso da função \textit{generate\_where\_clause}, uma vez que na maioria das alterações se faz necessário
-especificar qual entidade/conjunto de entidades receberá as alterações.
+\begin{programruledcaption}{código remove\_from antigo. \label{prog:remove_from_antigo}}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_antigo.bash}
+\end{programruledcaption}
+
+\begin{programruledcaption}{código generate\_where\_clause utilizado nas novas funções para gerar a cláusula WHERE SQL a partir dos parâmetros passados. \label{prog:generate_where_clause}} 
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/generate_where_clause.bash} 
+\end{programruledcaption}
+
+\begin{programruledcaption}{código remove\_from novo. \label{prog:remove_from_novo}. \label{prog:update_into}} 
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_novo.bash}  
+\end{programruledcaption}
+
+Além disso, outra implementação desenvolvida nessa etapa, foi a implementação do novo método \textit{update\_into} (Programa~\ref{prog:update_into}), que permitia a alteração pontual de algum atributo dentro de uma entidade do banco de dados e da função \textit{generate\_set\_clause} (Programa~\ref{prog:generate_set_clause}), utilizada para gerar a clausula \textit{set} do SQL, que define quais conjuntos de atributos serão alterados e quais os novos valores para esses atributos. Essa implementação também faz uso da função \textit{generate\_where\_clause}, uma vez que na maioria das alterações se faz necessário especificar qual entidade/conjunto de entidades receberá as alterações, como exemplificado no Programa~\ref{prog:snippet_update_into}.
 
 \begin{programruledcaption}{código update\_into}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/update_into.bash}
 \end{programruledcaption}
 
-\begin{programruledcaption}{código generate\_set\_clause utilizado para permitir especificar quais atributos serão alterados e quais serão seus novos valores}
+\begin{programruledcaption}{código generate\_set\_clause utilizado para permitir especificar quais atributos serão alterados e quais serão seus novos valores. \label{prog:generate_set_clause}} 
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/generate_set_clause.bash}
 \end{programruledcaption}
 
-\begin{programruledcaption}{snippet uso função update\_into}
+\begin{programruledcaption}{snippet uso função update\_into. \label{prog:snippet_update_into}} 
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/snippet_update_into_uso.bash}
 \end{programruledcaption}
 
-\todo[inline]{Finalizar com um parágrafo do porquê você mexeu no db pra amarrar com a próxima sessão.}
+A padronização dessas operações de CRUD e o isolamento das consultas SQL em funções parametrizadas foram fundamentais para garantir a escalabilidade do sistema. Esta base técnica de persistência de dados permitiu o desenvolvimento de funcionalidades que exigem um gerenciamento mais complexo de informações, como a automação de contatos e grupos, que será detalhada na seção seguinte.
