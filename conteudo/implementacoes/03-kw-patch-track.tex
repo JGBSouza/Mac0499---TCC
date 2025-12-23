@@ -1,13 +1,11 @@
 \section{KW Patch track}
 
-Atualmente, embora seja possível submeter patches através do kw, ainda não existe um mecanismo eficaz para acompanhar e gerenciar o ciclo de vida dessas submissões. Conforme novas versões de um mesmo patch são enviadas e revisões se acumulam, tornando cada vez mais difícil manter o controle sobre o histórico, as respostas recebidas e o estado atual de cada revisão.
+Atualmente, embora seja possível submeter \textit{patches} através do \textit{kw}, ainda não existe um mecanismo eficaz para acompanhar e gerenciar o ciclo de vida dessas submissões. Conforme novas versões de um mesmo \textit{patch} são enviadas e as revisões se acumulam, torna-se cada vez mais difícil manter o controle sobre o histórico, as respostas recebidas e o estado atual de cada alteração. Esta lacuna é significativa, pois obriga o desenvolvedor a realizar esse acompanhamento de forma externa e manual, o que fragmenta o fluxo de trabalho e aumenta a carga cognitiva. Diante dessa limitação, surgiu a necessidade de uma funcionalidade capaz de registrar, rastrear e atualizar automaticamente o status dos \textit{patches} submetidos, centralizando o gerenciamento do ciclo de vida diretamente no ecossistema do \textit{kw}.
 
 \subsection{Objetivos}
-Diante dessa limitação, surgiu\todo{talvez sugerir que esta lacuna é significativa, pois faz com que o usuário do kw tenha que resolver isto ``por fora''} a necessidade de uma ferramenta capaz de registrar, rastrear e atualizar automaticamente o status dos patches submetidos. Assim, o objetivo principal do \textit{Patch Track} é permitir que o usuário acompanhe de forma automatizada o progresso de suas contribuições, desde o envio inicial até a integração no repositório, reduzindo o esforço manual e promovendo maior clareza sobre o processo de revisão.
+Assim, o objetivo principal do \textit{Patch Track} é permitir que o usuário acompanhe de forma automatizada o progresso de suas contribuições, desde o envio inicial até a integração no repositório, reduzindo o esforço manual e promovendo maior clareza sobre o processo de revisão.
 
-Além disso, o sistema busca oferecer uma base sólida para extensões futuras, como integração com repositórios oficiais e coleta de métricas sobre o fluxo de contribuição, incluindo tempo médio de resposta, aprovação e integração de patches.\todo[inline]{Mais uma vez (prometo que a última), bata na tecla do kw como software para pesquisa e como ter dados como estes podem ser interessantes para estudar o modelo de desenvolvimento do kernel Linux.}
-
-\todo[inline]{Acho bom deixar claro que o patch-track ainda não está de fato implementado, mas que a parte mais difícil e os componentes gerais já foram feitos (no geral, veja como valorizar o que você fez).}
+Além disso, o sistema busca oferecer uma base sólida para extensões futuras, como integração com repositórios oficiais e coleta de métricas sobre o fluxo de contribuição, incluindo tempo médio de resposta, aprovação e integração de patches. Essa capacidade de extração de dados é fundamental para consolidar o \textit{kw} como uma ferramenta de suporte à pesquisa científica, permitindo o estudo empírico e sistemático do modelo de desenvolvimento do kernel Linux e o entendimento aprofundado de suas dinâmicas de colaboração em larga escala.
 
 \subsection{Arquitetura}
 
@@ -19,24 +17,31 @@ A entidade \textit{contribution} agrupa logicamente diferentes versões de um me
 
 O rastreamento dos envios é realizado pela tabela \textit{patch\_submission}, que registra o identificador da mensagem, o remetente e o vínculo entre cada envio e o patch correspondente. O sistema também oferece suporte a \textit{tags}, utilizadas como marcadores semânticos para facilitar a filtragem, a categorização e a exibição das informações.
 
-Essa estrutura de dados estabelece uma base robusta para o controle do ciclo de vida dos patches e possibilita futuras expansões, como integração com serviços externos de revisão e automação de métricas analíticas.
+Essa estrutura de dados estabelece uma base robusta para o controle do ciclo de vida dos patches e possibilita futuras expansões, como integração com serviços externos de revisão e automação de métricas analíticas (Figura~\ref{fig:kw_patch_track_erd}).
 
-\todo[inline]{Veja se resgata aquele pseudo-UML que você me mostrou pra mim naquela reunião em setembro quando eu estava no CBSoft. Isto valoriza e mostra o trabalho que você fez! Não se esqueça de referenciar a figura no texto acima.}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{kw_patch_track_erd}
+    \caption{Diagrama Entidade-Relacionamento do Kw patch\_track}
+    \label{fig:kw_patch_track_erd}
+\end{figure}
 
 \subsection{Funcionalidades}
 
 O \textit{kw patch\_track} oferece um conjunto de funcionalidades voltadas à automatização e ao gerenciamento das submissões de patches. Todas as interações ocorrem de forma integrada ao fluxo do \textit{kw}, mantendo a compatibilidade com a ferramenta principal de envio.
 
 \subsubsection{Registro e Rastreamento das contribuições}
-Durante a submissão dos patches com a ferramenta \textit{kw send\_patch}, uma contribuição pode ser especificada através da flag \textit{--to-contribution=<nome-da-contribuição>}, ou através do terminal interativo que identificará e exibirá as contribuições ainda ativas do usuário para nova submissão além de oferecer a possibilidade de criar uma nova. Nesse momento, ainda de maneira interativa, caso o usuário esteja realizando uma nova contribuição ele tem a possibilidade de identificar um repositório e um mantenedor responsável. Após a submissão, cada novo patch enviado é registrado no banco de dados, juntamente com informações sobre sua versão, título, autor, data de criação, \textit{commit\_hash} e também a sua submissão, caso o patch já tenha sido submetido anteriormente (Caso já exista outro patch no banco de dados com o mesmo título, autor, \textit{commit\_hash} e contribuição), apenas a nova submissão será registrada. Por fim, é registrada uma nova \textit{submission} agrupando as submissões individuais de cada patch enviado na sessão do \textit{kw send-patch} e as relacionando à contribuição.\todo[inline]{Aqui não sei se estou confundindo, mas me fez lembrar de um diagrama que você mostrou na reunião de setembro sobre o caminho e as transições que o patch faria no patch-track em seu ciclo de vida. Seria bem legal ele aparecer aqui.}
+Durante a submissão dos patches com a ferramenta \textit{kw send\_patch}, uma contribuição pode ser especificada através da flag \textit{--to-contribution=<nome-da-contribuição>}, ou através do terminal interativo que identificará e exibirá as contribuições ainda ativas do usuário para nova submissão além de oferecer a possibilidade de criar uma nova. Nesse momento, ainda de maneira interativa, caso o usuário esteja realizando uma nova contribuição ele tem a possibilidade de identificar um repositório e um mantenedor responsável. Após a submissão, cada novo patch enviado é registrado no banco de dados, juntamente com informações sobre sua versão, título, autor, data de criação, \textit{commit\_hash} e também a sua submissão, caso o patch já tenha sido submetido anteriormente (Caso já exista outro patch no banco de dados com o mesmo título, autor, \textit{commit\_hash} e contribuição), apenas a nova submissão será registrada. Por fim, é registrada uma nova \textit{submission} agrupando as submissões individuais de cada patch enviado na sessão do \textit{kw send-patch} e as relacionando à contribuição.
 
 Para extrair e salvar as informações dos patches submetidos, a ferramenta se utiliza da técnica de raspagem de dados de dois tipos de arquivos gerados durante a etapa de envio. O primeiro desses arquivos, gerado temporariamente para esse fluxo, é resultado do redirecionamento da saída do comando \textit{git send-email}, utilizado pelo \textit{send-patch} para publicação dos patches. Desse arquivo então o \textit{kw patch-track} extrai grande parte das informações, como o título, email do autor do commit/patch, email do remetente (pode não ser o mesmo usado para criar os commits), os emails dos destinatários, data e horário de submissão e por fim o message-id. Adicionalmente, para ter acesso aos hashes dos commits, avalia-se também os arquivos de patches preliminares, gerados pelo \textit{kw send-patch} para pré-processamento interno. Ainda que parte dos dados extraidos do resultado da submissão estejam disponíveis também no arquivo do patch, o fato de que parte das informações como títulos, autor e destinatários podem ser reescrita durante a submissão somado ao fato de que esses arquivos contém textos adicionais com o conteúdo do patch, poderiam levar a erros de julgamento ou informações imprecisas na hora da extração. 
 
-\subsection{Próximos passos}
-Atualmente, o patch-track encontra-se estruturado, com um objetivo claro e possíveis impactos para futuros usuários. Alguns pontos de desenvolvimento que permitiriam que a ferramenta evoluisse para uma versão inicial, incluem:
+\subsubsection{Integração com o mutt}
+Permitir integração com o cliente de email via terminal \textit{Mutt}, permitindo analisar caixas de email do usuário, monitorando submissões e eventuais respostas, além de permitir a visualização dos emails diretamente via terminal. 
+
 
 \subsubsection{Atualização Automática de Status}
 Implementar no sistema uma lógica de atualização automática dos status dos patches, baseada em heurísticas inspiradas no fluxo de revisão do \textit{kernel Linux}. Atualizando os estados dos patches e consequentemente das contribuições através de um comando
+
 Os estados possíveis incluem:
 \begin{itemize}
 \item \textbf{Submetido/Em revisão:} atribuído a patches recém-enviados;
@@ -48,23 +53,24 @@ Os estados possíveis incluem:
 
 \subsubsection{Atualização Manual de Status}
 Para permitir mais liberdade ao usuário e eventuais correções de julgamentos da heurística de atualização automática, uma outra implementação útil seria permitir alterações manuais do status do patch, mantendo controle total sobre o histórico.
+
 \subsubsection{Visualização de contribuição/Patches}
 Para permitir melhor gestão dos usuários de suas contribuições, permitir uma visualização detalhada tanto das contribuições quanto dos patches submetidos em cada uma
-\subsubsection{Renomeação de contribuição}
-Permitir que o usuário renomeie suas contribuições caso necessário, uma vez que o nome da contribuição só possui valor para o armazenamento e organização pessoal do usuário
-\subsubsection{Realocação de submissões}
-Permitir que o usuário realoque as suas submissões de uma contribuição para outra, como a gestão de qual à qual contribuição pertence uma submissão possui sentido apenas para usuário, permitir que ele realoque submissões pode ajudar na correção de eventuais erros de identificação da contribuição durante o envio dos patches
+
 \subsubsection{Definição de repositórios}
 Permitir que os usuários determinem à qual repositório será integrada sua contribuição
+
 \subsubsection{Definição de mantenedores}
 Permitir que os usuários determinem mantenedores para seus repositórios
-\subsubsection{Arquivamento de contribuições}
-Permitir que os usuários marquem contribuições como arquivadas, evitando que elas sejam automaticamente incluídas em comandos que interagem com a lista de contribuições
-\subsubsection{Integração com o mutt}
-Permitir integração com o cliente de email via terminal \textit{Mutt}, permitindo analisar caixas de email do usuário, monitorando submissões e eventuais respostas, além de permitir a visualização dos emails diretamente via terminal. 
+
+\subsection{Próximos passos}
+Atualmente, o patch-track encontra-se estruturado, com um objetivo claro e possíveis impactos para futuros usuários. Alguns pontos de desenvolvimento que permitiriam que a ferramenta evoluisse para uma versão inicial, incluem:
+
+\subsubsection{Renomeação de contribuição}
+Permitir que o usuário renomeie suas contribuições caso necessário, uma vez que o nome da contribuição só possui valor para o armazenamento e organização pessoal do usuário
+
+\subsubsection{Realocação de submissões}
+Permitir que o usuário realoque as suas submissões de uma contribuição para outra, como a gestão de qual à qual contribuição pertence uma submissão possui sentido apenas para usuário, permitir que ele realoque submissões pode ajudar na correção de eventuais erros de identificação da contribuição durante o envio dos patches
+
 \subsection{Resultados}
-
-\todo[inline]{Aqui, você pode usar o parágrafo abaixo que você comentou como base, focando mais no potencial do que no que foi feito. Novamente, deixando claro que é um WIP, mas que você já avançou bastante e deixou o terreno feito pra outras pessoas finalizarem; aliás, é literalmente o que acontecerá, se você parar para pensar :)}
-
-
-Com a introdução do \textit{kw patch track}, o processo de contribuição via \textit{kw} deve tornar-se mais organizada e automatizada. A ferramenta deve permitir acompanhar o ciclo de vida de cada patch de forma centralizada, eliminando a necessidade de acompanhamento manual e reduzindo o risco de perda de informações, apresentando maior clareza e rastreabilidade no fluxo de revisões, economia de tempo no acompanhamento de submissões, histórico completo e versionado de cada contribuição e uma base estruturada para análise estatística e integração futura com outras ferramentas, além de um ambiente mais unificado para colaboração no kernel, reduzindo dependências de outras ferramentas como softwares gerenciadores de email. Contudo, apesar dos avanços, dada a necessidade de uma visualização estruturada dos dados, uma das limitações o uso de uma interface de texto via terminal pode melhorar a usabilidade da ferramenta, garantindo melhor adesão da comunidade e melhor impacto na gestão de contribuições e agilidade nessa etapa de desenvolvimento.
+Com a introdução do \textit{kw patch track}, o processo de contribuição via \textit{kw} deve tornar-se mais organizado e automatizado. A ferramenta deve permitir acompanhar o ciclo de vida de cada patch de forma centralizada, eliminando a necessidade de acompanhamento manual e reduzindo o risco de perda de informações, apresentando maior clareza e rastreabilidade no fluxo de revisões, economia de tempo no acompanhamento de submissões, histórico completo e versionado de cada contribuição, uma base estruturada para análise estatística e integração futura com outras ferramentas, além de um ambiente mais unificado para colaboração no kernel, reduzindo dependências de outras ferramentas, como softwares gerenciadores de email.
