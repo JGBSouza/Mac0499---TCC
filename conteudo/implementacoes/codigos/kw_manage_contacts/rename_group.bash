@@ -1,10 +1,3 @@
-# This function renames a given group from the database
-#
-# @old_name: Name of the group that will be renamed
-# @new_name: New namw of the group
-#
-# Return:
-# returns 0 if successful, non-zero otherwise
 function rename_group()
 {
   local old_name="$1"

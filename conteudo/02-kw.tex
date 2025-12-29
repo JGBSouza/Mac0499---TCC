@@ -9,6 +9,13 @@ Para que o kw cumpra esse papel científico, é necessário que ele forneça mec
 \section{Arquitetura}
 Para que o software seja capaz de agrupar tantas ferramentas, o kw segue uma organização estrutural específica em 5 partes:
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{kw-architecture}
+    \caption{Arquitetura conceitual do kw\ \small \textit{Fonte: \cite{tadokoro2025kworkflowSBES}}}
+    \label{fig:kw-architecture}
+\end{figure}
+
 \begin{enumerate} 
     \item \textbf{Hub}: Para permitir que todas as ferramentas do kw sejam oferecidas através de uma interface única, o software utiliza-se de um arquivo central, o \textit{kw.sh}. Esse arquivo atua como um hub — representado pela cor verde na Figura~\ref{fig:kw-architecture} — sendo o responsável por receber os comandos iniciais dos usuários no terminal e redirecionar a execução para a ferramenta especificada.
     \item \textbf{Componentes}: Cada ferramenta do kw possui um arquivo principal que contém o processamento central do comando. Esta camada corresponde à seção azul denominada \textit{FEATURES} na Figura~\ref{fig:kw-architecture}, incluindo a lista de comandos específicos para cada funcionalidade e uma seção de ajuda para orientação dos usuários.
@@ -16,14 +23,7 @@ Para que o software seja capaz de agrupar tantas ferramentas, o kw segue uma org
     \item \textbf{Plugins}: Códigos dependentes de contextos externos ou com alta volatilidade de desenvolvimento são isolados em arquivos específicos. Estes plugins, identificados na cor vermelha (\textit{PLUGINS}) na Figura~\ref{fig:kw-architecture}, permitem que o código principal permaneça estável, aproveitando os métodos declarados independentemente das alterações nas implementações internas desses plugins.
     \item \textbf{Documentação}: Para manter o registro das implementações e informações necessárias para colaboradores, o kw mantém um sistema de documentação, que também é utilizado para a construção do blog da ferramenta. \end{enumerate}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{kw-architecture}
-    \caption{Arquitetura conceitual do kw\ \small \textit{Fonte: \cite{tadokoro2025kworkflowSBES}}}
-    \label{fig:kw-architecture}
-\end{figure}
-
-\section{Soluções}
+\section{Funcionalidades}
 
 Para compor o seu ferramental e permitir um ambiente holístico, o kw utiliza-se da integração e simplificação de automações consolidadas na comunidade, como o Git, Lore, b4, e outros, desenvolvendo soluções locais quando necessário. De acordo com \cite{tadokoro2023kwlore}, as automações desenvolvidas para o kw dividem-se em dois tipos. As implementações práticas afetam diretamente o desenvolvimento do kernel, como o \textit{kw build} e o \textit{kw deploy}, utilizados para a criação e aplicação da imagem com as alterações do desenvolvedor. Adicionalmente, existem as ferramentas indiretas, que impactam o fluxo de trabalho de forma abrangente, como o \textit{kw send-patch} e o \textit{kw-patch hub}, voltados, respectivamente, à submissão e consulta de \textit{patches} no \textit{lore}.
 
@@ -68,11 +68,11 @@ Por se tratar de uma ferramenta de terminal, os comandos do kw precisam ser invo
 Apesar da grande estrutura, compreender de forma completa o fluxo do desenvolvedor do kernel ainda é um desafio que o kw busca superar, estando em constante processo de desenvolvimento por parte da sua comunidade. Um dos processos em abertos, é o de conseguir automatizar o fluxo de gestão dos patches após a submissão e antes da aprovação, na qual os patches passam pelo processo de revisão por parte dos mantenedores, que se torna um desafio em particular durante a contribuição para o kernel Linux dado o seu modelo de contribuição não trivial por listas de email.
 \section{O problema da contribuição no desenvolvimento de software livre}
 
-Um grande desafio encontrado durante a construção de sistemas de software é a dificuldade de conciliar o trabalho simultâneo dos diversos colaboradores, o que envolve a capacidade de coordenar as diferentes versões do projeto e as inúmeras submissões de alteração para a versão principal. Antes do advento dos sistemas de controle de versão, os programadores dependiam de métodos manuais para gerenciar suas modificações de código. Eles costumavam fazer backups regulares de seus arquivos de código ou adotar convenções de nomenclatura para distinguir entre as várias versões. Esse processo era bastante inconsistente e difícil de gerenciar, especialmente quando alguns desenvolvedores estavam trabalhando no mesmo projeto. \parencite{devineni2020vcs}
+Um grande desafio encontrado durante a construção de sistemas de software é a dificuldade de conciliar o trabalho simultâneo dos diversos colaboradores, o que envolve a capacidade de coordenar as diferentes versões do projeto e as inúmeras submissões de alteração para a versão principal. Antes do advento dos sistemas de controle de versão, os programadores dependiam de métodos manuais para gerenciar suas modificações de código. Eles costumavam fazer backups regulares de seus arquivos de código ou adotar convenções de nomenclatura para distinguir entre as várias versões. Esse processo era bastante inconsistente e difícil de gerenciar, especialmente quando alguns desenvolvedores estavam trabalhando no mesmo projeto \parencite{devineni2020vcs}.
 
-Gerenciar as versões de um software se torna um problema ainda maior dependendo do tamanho total do software, do número de contribuidores e da quantidade de contribuições sendo realizadas nele de maneira simultânea. No kernel, por exemplo, a versão 6.13, lançada em 19/01/2025, contou com mais de 206 contribuições por dia por parte de 2085 colaboradores, resultando em um código fonte final com mais de 39 milhões de linhas \cite{kernelhistory}. Segundo a tendência, esses números devem seguir aumentando de forma constante conforme novas versões forem sendo desenvolvidas.
+Gerenciar as versões de um software se torna um problema ainda maior dependendo do tamanho total do software, do número de contribuidores e da quantidade de contribuições sendo realizadas nele de maneira simultânea. No kernel, por exemplo, a versão 6.13, lançada em 19/01/2025, contou com mais de 206 contribuições por dia por parte de 2085 colaboradores, resultando em um código fonte final com mais de 39 milhões de linhas \citep{kernelhistory}. Segundo a tendência, esses números devem seguir aumentando de forma constante conforme novas versões forem sendo desenvolvidas.
 
-Buscando superar parte dessas dificuldades e melhorar o processo colaborativo de desenvolvimento de software, foram desenvolvidos os sistemas de controle de versão. Ainda segundo \cite{devineni2020vcs} Os primeiros Version Control Systems (VCS), permitiam que os desenvolvedores mantivessem um histórico das alterações realizadas nos arquivos, o que facilitava a reversão de mudanças e oferecia visibilidade sobre a evolução do código. No entanto, o potencial colaborativo ainda era limitado, exigindo muitos acordos e gestões manuais por parte dos colaboradores.
+Buscando superar parte dessas dificuldades e melhorar o processo colaborativo de desenvolvimento de software, foram desenvolvidos os sistemas de controle de versão. Ainda segundo \cite{devineni2020vcs}, os primeiros Version Control Systems (VCS), permitiam que os desenvolvedores mantivessem um histórico das alterações realizadas nos arquivos, o que facilitava a reversão de mudanças e oferecia visibilidade sobre a evolução do código. No entanto, o potencial colaborativo ainda era limitado, exigindo muitos acordos e gestões manuais por parte dos colaboradores.
 
 Como segunda opção, surgem os \textit{Concurrent Versions System} \textit{(CVS)}, baseados em um modelo de repositório central. Nele, os desenvolvedores podiam obter os arquivos, aplicar suas modificações e submetê-las novamente ao repositório. Esse modelo contribuiu para maior agilidade em equipes de desenvolvimento, ao permitir que várias pessoas trabalhassem simultaneamente na mesma base de código. Ainda assim, em projetos de grande porte ou com equipes distribuídas geograficamente, os sistemas centralizados apresentavam limitações no gerenciamento eficiente do trabalho.
 

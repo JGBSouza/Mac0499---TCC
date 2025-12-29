@@ -13,16 +13,16 @@ grupos e, posteriormente, incluir automaticamente tais grupos ao enviar patches 
 
 A arquitetura da solução foi planejada de forma modular. O banco de dados é responsável por armazenar contatos individuais (\textit{email\_contact}), os grupos (\textit{email\_group}) e suas associações (\textit{email\_contact\_group}),
 enquanto a interface de linha de comando fornece os comandos necessários para manipulação dessas informações. O modelo de dados contempla as entidades contato,
-grupo e a relação entre elas, garantindo flexibilidade para gerenciar múltiplos contextos e equipes. (Figura~\ref{fig:kw_manage_contacts_erd})
+grupo e a relação entre elas, garantindo flexibilidade para gerenciar múltiplos contextos e equipes (Figura~\ref{fig:kw_manage_contacts_erd}).
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{kw_manage_contacts_erd}
-    \caption{Diagrama Entidade-Relacionamento do Kw manage-contacts}
+    \caption{Diagrama Entidade-Relacionamento do kw manage-contacts}
     \label{fig:kw_manage_contacts_erd}
 \end{figure}
 
-\begin{programruledcaption}{modelagem sql Kw manage-contacts \label{prog:kw_manage_contacts_sql}}
+\begin{programruledcaption}{modelagem sql kw manage-contacts \label{prog:kw_manage_contacts_sql}}
     \inputminted[breaklines,fontsize=\footnotesize]{sql}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_manage_contacts_db.sql}
 \end{programruledcaption}
 
@@ -31,17 +31,15 @@ A interação com a ferramenta ocorre exclusivamente pelo terminal, de forma a m
 Foram definidos comandos claros e diretos, permitindo que o usuário visualize grupos existentes, adicione novos contatos, associe-os a
 diferentes grupos e utilize esses grupos diretamente no envio de e-mails.
 
-As principais funcionalidades implementadas são referenciadas no Programa~\ref{prog:kw_manage_contacts_comandos}
+As principais funcionalidades implementadas são referenciadas no Programa~\ref{prog:kw_manage_contacts_comandos}.
 
 \begin{programruledcaption}{comandos kw manage contacts. \label{prog:kw_manage_contacts_comandos}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/comandos.bash}
 \end{programruledcaption}
 
 \subsubsection{Criação de Grupos}
-Essa função recebe o nome de um novo grupo e realiza a validação antes de sua criação. 
-A validação consiste em verificar se o nome já não existe no banco de dados, 
-se não contém caracteres especiais e se o tamanho é inferior a 50 caracteres. 
-Caso todas as condições sejam atendidas, o grupo é criado e persistido no banco com sucesso (Programa~\ref{prog:kw_mc_create_email_group}).
+
+A funcionalidade de criação de grupos, executada por meio do comando \texttt{kw manage-contacts group-create}, permite a organização estruturada de contatos para facilitar as submissões. O comando recebe o nome do novo grupo, que é submetido a algumas de validações de integridade antes de sua persistência no banco de dados. Essas verificações asseguram que o identificador proposto seja único, não contenha caracteres especiais e respeite o limite de 50 caracteres. Uma vez atendidos os requisitos, o sistema realiza a inserção do registro (Programa~\ref{prog:kw_mc_create_email_group}).
 
 \begin{programruledcaption}{create\_email\_group e create\_group. \label{prog:kw_mc_create_email_group}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/create_email_group_e_create_group.bash}
@@ -49,65 +47,52 @@ Caso todas as condições sejam atendidas, o grupo é criado e persistido no ban
 
 \subsubsection{Exclusão de Grupos}
 
-Essa função remove um grupo de e-mails específico e todas as suas referências no banco de dados.
-Nesse caso, é verificada apenas a existência do grupo, uma vez que, se já foi previamente adicionado, 
-deve atender aos critérios de validação. A remoção utiliza a cláusula CASCADE na tabela de associação (Programa~\ref{prg:kw_manage_contacts_sql}),
-garantindo que todas as relações existentes para aquele grupo sejam automaticamente 
-excluídas. Além disso, os contatos que permanecerem sem associação a grupos também são removidos (Programa~\ref{prog:kw_mc_remove_email_group}).
+A funcionalidade de exclusão, invocada pelo comando \texttt{kw manage-contacts group-remove}, permite a remoção definitiva de uma categoria de contatos e de todas as suas referências no sistema. A operação exige a validação da existência prévia do grupo no banco de dados e utiliza a cláusula \textit{CASCADE} na tabela de associação para garantir a consistência dos dados (Programa~\ref{prog:kw_manage_contacts_sql}). Este mecanismo extingue automaticamente todos os vínculos do grupo, enquanto uma rotina adicional remove contatos que permaneçam sem qualquer outra associação (Programa~\ref{prog:kw_mc_remove_email_group}).
 
 \begin{programruledcaption}{remove\_email\_group e remove\_group. \label{prog:kw_mc_remove_email_group}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/remove_email_group_e_remove_group.bash}
 \end{programruledcaption}
 
 \subsubsection{Renomeação de Grupos}
-Essa função realiza a renomeação de um grupo de e-mails existente, 
-recebendo como parâmetros o nome atual e o novo nome desejado. Antes da atualização,
-o novo nome do grupo passa novamente pelo processo de validação, garantindo que não corresponda 
-a um grupo já existente no banco de dados e que siga as mesmas regras de restrição aplicadas na 
-criação — como não conter caracteres especiais e ter comprimento inferior a 50 caracteres. 
-Se as condições forem atendidas, o nome é atualizado com sucesso (Programa~\cite{prog:kw_mc_rename_email_group})
+
+A funcionalidade de renomeação, acessada através do comando \texttt{kw manage-contacts group-rename}, permite a alteração de identificadores existentes sem a necessidade de excluir e recriar registros. A operação recebe como parâmetros o nome atual e o novo rótulo, submetendo este último ao mesmo processo de validação do ciclo de criação (limite de caracteres e ausência de símbolos especiais). Essa revalidação assegura que a consistência da base de dados seja preservada, mantendo íntegras as associações de contatos vinculadas ao grupo (Programa~\ref{prog:kw_mc_rename_email_group}).
 
 \begin{programruledcaption}{rename\_email\_group e rename\_group. \label{prog:kw_mc_rename_email_group}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/rename_email_group_e_rename_group.bash}
 \end{programruledcaption}
 
 \subsubsection{Adicionar contatos à Grupos de Email}
-Essa função é responsável por associar novos contatos a um grupo de e-mails existente. 
-Ela recebe como parâmetros o nome do grupo e uma lista de contatos no formato ``NOME\_CONTATO <EMAIL\_CONTATO>, NOME\_CONTATO <EMAIL\_CONTATO>,
-...''. Inicialmente, a função valida a existência do grupo no banco de dados. Em seguida, divide a lista de contatos e executa verificações
-individuais para cada um, como a validade do endereço de e-mail e a presença de um nome associado. Após essas validações, os contatos são 
-inseridos no banco de dados e vinculados ao grupo correspondente (Programa~\ref{prog:kw_mc_rename_email_group}).
 
-\begin{programruledcaption}{add\_email\_contacts e add\_contact\_group \label{prog:kw_mc_rename_email_group}}
+A funcionalidade de associação de contatos, executada pelo comando \texttt{kw group-add-contact}, permite o gerenciamento e a expansão de grupos por meio da inserção em lote. A operação recebe o nome do grupo alvo e uma lista estruturada no formato \texttt{NOME <EMAIL>}. O sistema valida a existência do grupo, segmenta a entrada e executa verificações de integridade sintática em cada endereço de e-mail. Uma vez validados, os contatos são persistidos e vinculados ao grupo correspondente (Programa~\ref{prog:kw_add_email_contact}).
+
+\begin{programruledcaption}{add\_email\_contacts e add\_contact\_group \label{prog:kw_add_email_contact}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/add_email_contacts_e_add_contact_group.bash}
 \end{programruledcaption}
 
 \subsubsection{Exibir grupos}
-A função \textit{show\_email\_groups}, Programa~\ref{prog:show_email_groups}, é utilizada para exibir informações sobre os grupos de e-mail cadastrados. 
-Caso receba como parâmetro o nome de um grupo específico, a função valida sua existência e, 
-em seguida, mostra os contatos associados a esse grupo. Por outro lado, quando nenhum parâmetro 
-é informado, são exibidas informações gerais sobre todos os grupos existentes no banco de dados. 
+
+A funcionalidade de consulta, operada pelo comando \texttt{kw manage-contacts group-show}, permite visualizar as informações armazenadas no banco de dados de duas maneiras. Quando um identificador de grupo é fornecido como parâmetro, o sistema valida sua existência e lista todos os contatos vinculados (Figura~\ref{fig:exemplo_group_show_especifico}). Caso o comando seja invocado sem parâmetros, o sistema apresenta um resumo de todos os grupos cadastrados (Figura~\ref{fig:exemplo_group_show}). A lógica de processamento e formatação da saída de dados detalhada pode ser observada no Programa~\ref{prog:show_email_groups}.
 
 \begin{programruledcaption}{show email groups, print\_groups\_infos e print\_contacts\_infos. \label{prog:show_email_groups}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/show_email_groups.bash}
 \end{programruledcaption}
 
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=1.2\textwidth]{exemplo\_group\_show}
-    \caption{Exemplo do comando ``group\_show''  sem um grupo especificado. \label{fig:exemplo_group_show}}
-\end{figure}
-
-\begin{figure}[H]
+\begin{figure}[!htbp]
   \centering
     \includegraphics[width=1.2\textwidth]{exemplo_group_show_especifico}
     \caption{Exemplo do comando ``group\_show'' para um grupo específico. \label{fig:exemplo_group_show_especifico}}
 \end{figure}
 
+\begin{figure}[!htbp]
+  \centering
+    \includegraphics[width=1.2\textwidth]{exemplo\_group\_show}
+    \caption{Exemplo do comando ``group\_show''  sem um grupo especificado. \label{fig:exemplo_group_show}}
+\end{figure}
 \subsection{Enviar patches para grupos}
 
-Dois novos comandos, \textit{--to-groups} e \textit{--cc-groups} foram adicionados à ferramenta \textit{send-patch} para permitir o envio de patches diretamente para grupos.
-Esses comandos recebem listas com os nomes dos grupos separados por vírgulas, busca os contatos associados no banco de dados e adiciona seus emails como destinatários (Programa~\cite{send_patch_main_com_to_cc_groups}).
+A integração de grupos de e-mail ao fluxo de submissões é viabilizada pelos novos parâmetros \texttt{--to-groups} e \texttt{--cc-groups}, incorporadas a feature \textit{kw send-patch}. Essa funcionalidade permite ao usuário enviar patches a grupos de contatos pré-definidos, eliminando a necessidade de inserção manual de múltiplos endereços, principalmente em submissões recorrentes.
+
+Para que isso seja possível, o \textit{send-patch} recebe o nome dos grupos em listas contendo identificadores de grupos separados por vírgulas. Internamente, o sistema processa essa entrada realizando consultas ao banco de dados para realizar a consulta dos nomes de grupos e encontrar os endereços de e-mail válidos, que são então injetados nos campos de destinatário (\textit{To}) ou de cópia (\textit{Cc}) da mensagem (Programa~\ref{prog:send_patch_main_com_to_cc_groups}). Os novos parâmetros podem ser encontrados em: Programas~\ref{prog:opcoes-send-patch}.
 
 \begin{programruledcaption}{opções do comando --send do kw send-patch contendo o to-groups e o cc-groups. \label{prog:opcoes-send-patch}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_send_patch_options.bash}
