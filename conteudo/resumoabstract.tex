@@ -4,17 +4,17 @@
 
 % As palavras-chave são obrigatórias, em português e em inglês, e devem ser
 % definidas antes do resumo/abstract. Acrescente quantas forem necessárias.
-\palavraschave{Palavra-chave1, Palavra-chave2, Palavra-chave3}
+\palavraschave{kernel Linux, kworkflow, kw mange-contacts, kw patch-track, Fluxo de submissão de patches, Gerenciamento de contatos de email}
 
-\keywords{Keyword1,Keyword2,Keyword3}
+\keywords{kernel Linux, kworkflow, kw mange-contacts, kw patch-track, Patches submission workflow, email contacts managment}
 
 % O resumo é obrigatório, em português e inglês. Estes comandos também
 % geram automaticamente a referência para o próprio documento, conforme
 % as normas sugeridas da USP.
 \resumo{
-
+O desenvolvimento do kernel Linux ocorre em um ambiente de grande escala e alta complexidade, baseado em um modelo de desenvolvimento perpétuo que envolve ciclos contínuos de integração, estabilização e manutenção de versões. Nesse contexto, o processo de submissão e revisão de patches é realizado majoritariamente por meio de listas de e-mail, o que impõe desafios significativos relacionados à organização das contribuições, à rastreabilidade das revisões, à sobrecarga dos mantenedores e ao alto custo de entrada para novos desenvolvedores, além de fragmentar o fluxo de trabalho ao exigir o uso de múltiplas ferramentas externas. Com o objetivo de mitigar essas limitações, este trabalho propõe a ampliação do Kworkflow (kw), uma ferramenta de software livre voltada à automação do fluxo de contribuição ao kernel Linux, por meio da introdução de mecanismos para a gestão e o acompanhamento de patches durante a fase de revisão, concretizados nos módulos kw manage contact, responsável pela organização e disponibilização de informações sobre mantenedores e revisores, e kw patch-track, voltado ao monitoramento do estado e da evolução dos patches submetidos às listas de e-mail. As soluções apresentadas integram-se às funcionalidades existentes do kw, permitindo centralizar informações provenientes das listas de e-mail, automatizar etapas recorrentes do processo de revisão e oferecer uma visão mais integrada do ciclo de contribuição, contribuindo para a redução da sobrecarga cognitiva dos desenvolvedores e para a melhoria da eficiência e da transparência do processo de desenvolvimento do kernel Linux.
 }
 
 \abstract{
-
+The development of the Linux kernel takes place in a large-scale and highly complex environment, based on a perpetual development model that involves continuous cycles of integration, stabilization, and maintenance of released versions. In this context, the submission and review of patches are conducted primarily through mailing lists, which introduces significant challenges related to contribution organization, review traceability, maintainer workload, and the high entry barrier for new developers, as well as fragmenting the workflow by requiring the use of multiple external tools. To address these limitations, this work proposes the extension of Kworkflow (kw), a Free/Libre and Open Source Software (FLOSS) tool aimed at automating the Linux kernel contribution process, through the introduction of mechanisms for managing and tracking patches during the review phase, implemented in the kw manage contact module, which organizes and provides information about maintainers and reviewers, and the kw patch-track module, which monitors the status and evolution of patches submitted to mailing lists. The proposed solutions integrate with existing kw functionalities, enabling the centralization of information from mailing lists, the automation of recurring review tasks, and the provision of a more integrated view of the contribution lifecycle, thereby contributing to reduced developer cognitive load and to improvements in the efficiency and transparency of the Linux kernel development process.
 }

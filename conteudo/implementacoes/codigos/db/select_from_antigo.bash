@@ -1,16 +1,3 @@
-# This function gets the values in the table of given database
-#
-# @flag:      Flag to control function output
-# @table:     Table to select info from
-# @columns:   Columns of the table to get
-# @pre_cmd:   Pre command to execute
-# @order_by:  List of attributes to use for ordering
-# @db:        Name of the database file
-# @db_folder: Path to the folder that contains @db
-#
-# Return:
-# 2 if db doesn't exist; 22 if table is empty
-# 0 if succesful; non-zero otherwise
 function select_from()
 {
   local table="$1"

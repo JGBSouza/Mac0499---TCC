@@ -1,11 +1,3 @@
-# This function receives a condition_array and then generate
-# the infos that will be used by the WHERE clause to specify
-# the data whe want.
-#
-# @condition_array_ref: The condition array containing the conditions
-#
-# Returns:
-# A string containing the generated clause
 function generate_where_clause()
 {
   local -n condition_array_ref="$1"

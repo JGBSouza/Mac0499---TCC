@@ -1,10 +1,5 @@
 function add_email_contacts()
 {
-  local contacts_list="$1"
-  local group_name="$2"
-  local group_id
-  declare -A _contacts_array
-
   if [[ -z "$contacts_list" ]]; then
     complain 'The contacts list is empty'
     return 61 # ENODATA
@@ -44,14 +39,6 @@ function add_email_contacts()
   return 0
 }
 
-# This function add the association between the contacts
-# and its group in the database
-#
-# @contacts_array: The contact name
-# @group_id: The id of group which the contacts will be associated
-#
-# Returns:
-# returns 0 if successful, non-zero otherwise
 function add_contact_group()
 {
   local -n contacts_array="$1"
