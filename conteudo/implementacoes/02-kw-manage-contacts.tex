@@ -88,18 +88,19 @@ A funcionalidade de consulta, operada pelo comando \texttt{kw manage-contacts gr
     \includegraphics[width=1.2\textwidth]{exemplo\_group\_show}
     \caption{Exemplo do comando ``group\_show''  sem um grupo especificado. \label{fig:exemplo_group_show}}
 \end{figure}
+
 \subsection{Enviar patches para grupos}
 
 A integração de grupos de e-mail ao fluxo de submissões é viabilizada pelos novos parâmetros \texttt{--to-groups} e \texttt{--cc-groups}, incorporadas a feature \textit{kw send-patch}. Essa funcionalidade permite ao usuário enviar patches a grupos de contatos pré-definidos, eliminando a necessidade de inserção manual de múltiplos endereços, principalmente em submissões recorrentes.
 
 Para que isso seja possível, o \textit{send-patch} recebe o nome dos grupos em listas contendo identificadores de grupos separados por vírgulas. Internamente, o sistema processa essa entrada realizando consultas ao banco de dados para realizar a consulta dos nomes de grupos e encontrar os endereços de e-mail válidos, que são então injetados nos campos de destinatário (\textit{To}) ou de cópia (\textit{Cc}) da mensagem (Programa~\ref{prog:send_patch_main_com_to_cc_groups}). Os novos parâmetros podem ser encontrados em: Programas~\ref{prog:opcoes-send-patch}.
 
-\begin{programruledcaption}{opções do comando --send do kw send-patch contendo o to-groups e o cc-groups. \label{prog:opcoes-send-patch}}
-    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_send_patch_options.bash}
-\end{programruledcaption}
-
 \begin{programruledcaption}{Função send\_patch\_main com métodos --to-groups e cc-groups. \label{prog:send_patch_main_com_to_cc_groups}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_send_patch.bash}
+\end{programruledcaption}
+
+\begin{programruledcaption}{opções do comando --send do kw send-patch contendo o to-groups e o cc-groups. \label{prog:opcoes-send-patch}}
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/kw_manage_contacts/kw_send_patch_options.bash}
 \end{programruledcaption}
 
 \subsection{Resultados}

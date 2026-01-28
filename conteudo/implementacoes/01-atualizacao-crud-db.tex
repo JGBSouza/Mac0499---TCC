@@ -1,6 +1,6 @@
 \section{CRUD banco de dados}
 
-Para poder dar suporte para suas diversas funcionalidades, o kw conta com um sistema de banco de dados, desenvolvido em SQLite3, que armazena informações necessárias para o funcionamento, principalmente, das as ferramentas kw pomodoro e kw patch-hub, além de possuir dados de telemetria sobre a utilização do software pelos usuários. Para garantir a consistência e segurança dos dados entre o banco de dados e a aplicação, é crucial desenvolver operações que lidem com operações de manipulação, como inserção, leitura, atualização e deleção de dados (conhecidas como CRUD - create, read, update, delete). Essas operações servem como interface entre as diferentes partes do sistema, permitindo uma interação eficaz e garantindo que os dados sejam gerenciados de forma precisa e confiável.
+Para poder dar suporte para suas diversas funcionalidades, o kw conta com um sistema de banco de dados, desenvolvido em SQLite3, que armazena informações necessárias para o funcionamento, principalmente, das ferramentas \textit{kw pomodoro} e \textit{kw patch-hub}, além de possuir dados de telemetria sobre a utilização do software pelos usuários. Para garantir a consistência e segurança dos dados entre o banco de dados e a aplicação, é crucial desenvolver operações que lidem com operações de manipulação, como inserção, leitura, atualização e deleção de dados (conhecidas como CRUD - create, read, update, delete). Essas operações servem como interface entre as diferentes partes do sistema, permitindo uma interação eficaz e garantindo que os dados sejam gerenciados de forma precisa e confiável.
 
 Contudo, deixar instruções SQL dispersas diretamente no código de aplicação não é considerado uma boa prática de engenharia de software, pois dificulta a manutenção, a legibilidade e a evolução do sistema. O ideal é encapsular o acesso ao banco de dados em funções ou camadas de abstração que forneçam operações de mais alto nível, reduzindo o acoplamento entre a lógica de negócio e as consultas.
 
@@ -33,17 +33,17 @@ Por fim, essa alteração também permitiu que comparações de desigualdades fo
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_antigo.bash}
 \end{programruledcaption}
 
+\begin{programruledcaption}{código remove\_from novo. \label{prog:remove_from_novo}} 
+    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_novo.bash}  
+\end{programruledcaption}
+
 \begin{programruledcaption}{código generate\_where\_clause utilizado nas novas funções para gerar a cláusula WHERE SQL a partir dos parâmetros passados. \label{prog:generate_where_clause}} 
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/generate_where_clause.bash} 
 \end{programruledcaption}
 
-\begin{programruledcaption}{código remove\_from novo. \label{prog:remove_from_novo}. \label{prog:update_into}} 
-    \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/remove_from_novo.bash}  
-\end{programruledcaption}
-
 Além disso, outra implementação desenvolvida nessa etapa, foi a implementação do novo método \textit{update\_into} (Programa~\ref{prog:update_into}), que permitia a alteração pontual de algum atributo dentro de uma entidade do banco de dados e da função \textit{generate\_set\_clause} (Programa~\ref{prog:generate_set_clause}), utilizada para gerar a clausula \textit{set} do SQL, que define quais conjuntos de atributos serão alterados e quais os novos valores para esses atributos. Essa implementação também faz uso da função \textit{generate\_where\_clause}, uma vez que na maioria das alterações se faz necessário especificar qual entidade/conjunto de entidades receberá as alterações, como exemplificado no Programa~\ref{prog:snippet_update_into}.
 
-\begin{programruledcaption}{código update\_into}
+\begin{programruledcaption}{código update\_into. \label{prog:update_into}}
     \inputminted[breaklines,fontsize=\footnotesize]{bash}{conteudo/implementacoes/codigos/db/update_into.bash}
 \end{programruledcaption}
 
